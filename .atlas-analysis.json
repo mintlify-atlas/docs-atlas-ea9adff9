@@ -1,0 +1,110 @@
+{
+  "projectType": "frontend",
+  "projectName": "Slick Carousel",
+  "projectDescription": "A fully responsive, touch-enabled jQuery carousel plugin with infinite looping and customizable settings.",
+  "theme": "palm",
+  "primaryColor": "#3498db",
+  "lightColor": "#5dade2",
+  "darkColor": "#2980b9",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/configuration",
+              "concepts/responsive-design",
+              "concepts/accessibility"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/basic-usage",
+              "guides/advanced-features",
+              "guides/theming",
+              "guides/data-attributes",
+              "guides/examples"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "resources/browser-support",
+              "resources/migration",
+              "resources/troubleshooting",
+              "resources/contributing"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Reference",
+            "pages": [
+              "api/settings",
+              "api/methods",
+              "api/events",
+              "api/sass-variables"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Fully responsive and mobile-friendly",
+    "Touch and swipe enabled",
+    "Infinite looping",
+    "Autoplay with pause on hover",
+    "Keyboard navigation",
+    "Center mode with partial visibility",
+    "Fade and slide transitions",
+    "Lazy loading support",
+    "Vertical sliding",
+    "Grid mode with rows",
+    "RTL (right-to-left) support",
+    "Custom arrow and dot navigation",
+    "Breakpoint-based responsive settings",
+    "Synced slider navigation"
+  ],
+  "publicApiSurface": [
+    "$(element).slick(options)",
+    "slickNext()",
+    "slickPrev()",
+    "slickGoTo(index, dontAnimate)",
+    "slickCurrentSlide()",
+    "slickAdd(element, index, addBefore)",
+    "slickRemove(index, removeBefore)",
+    "slickFilter(filter)",
+    "slickUnfilter()",
+    "slickGetOption(option)",
+    "slickSetOption(option, value, refresh)",
+    "slickPause()",
+    "slickPlay()",
+    "unslick()",
+    "init event",
+    "reInit event",
+    "beforeChange event",
+    "afterChange event",
+    "breakpoint event",
+    "destroy event",
+    "edge event",
+    "swipe event",
+    "lazyLoaded event",
+    "lazyLoadError event",
+    "setPosition event"
+  ]
+}
