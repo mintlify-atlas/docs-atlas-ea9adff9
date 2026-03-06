@@ -620,7 +620,7 @@ Fires after an image fails to load.
 // Load fallback image on error
 $('.slider').on('lazyLoadError', function(event, slick, image, imageSource) {
   console.error('Failed to load:', imageSource);
-  $(image).attr('src', '/images/placeholder.jpg');
+  $(image).attr('src', '/path/to/fallback-image.jpg');
 });
 
 // Show error message
@@ -687,7 +687,7 @@ $('.product-slider')
   })
   .on('lazyLoadError', function(event, slick, image, imageSource) {
     console.error('Failed: ' + imageSource);
-    $(image).attr('src', '/images/placeholder.jpg');
+    $(image).attr('src', '/path/to/fallback-image.jpg');
   });
 
 // Now initialize the slider
