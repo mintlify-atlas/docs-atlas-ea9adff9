@@ -1,0 +1,582 @@
+---
+title: Responsive Design
+description: Configure Slick Carousel to adapt to different screen sizes with responsive breakpoints and mobile-first design patterns.
+---
+
+## Overview
+
+Slick Carousel includes a powerful responsive system that allows you to configure different settings at specific breakpoints. This enables your carousel to adapt seamlessly across devices, from mobile phones to large desktop displays.
+
+## The Responsive Option
+
+The `responsive` option is an array of objects containing breakpoints and their corresponding settings. This unique and powerful feature lets you customize carousel behavior at different viewport widths.
+
+<ParamField path="responsive" type="array" default="null">
+  Array of objects containing breakpoints and settings. Enables different configurations at given viewport widths.
+</ParamField>
+
+## Basic Responsive Configuration
+
+Here's the example from the Slick Carousel source:
+
+```javascript
+$(".slider").slick({
+  // Normal options (default behavior)
+  infinite: false,
+
+  // Responsive breakpoints
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        infinite: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 300,
+      settings: "unslick" // Destroys slick
+    }
+  ]
+});
+```
+
+## How Breakpoints Work
+
+### Desktop-First (Default)
+
+By default, Slick uses a desktop-first approach where breakpoints trigger when the viewport is **less than** the specified width.
+
+<Info>
+With desktop-first (default), a `breakpoint: 1024` means the settings apply when the viewport is **1024px or smaller**.
+</Info>
+
+```javascript
+$('.slider').slick({
+  slidesToShow: 4,  // Default for large screens
+  slidesToScroll: 4,
+  
+  responsive: [
+    {
+      breakpoint: 1024,  // Applies when width <= 1024px
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3
+      }
+    },
+    {
+      breakpoint: 768,   // Applies when width <= 768px
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,   // Applies when width <= 480px
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+});
+```
+
+### Mobile-First Approach
+
+Enable mobile-first calculation where breakpoints trigger when the viewport is **greater than** the specified width.
+
+<ParamField path="mobileFirst" type="boolean" default="false">
+  Use mobile-first calculation for responsive settings. When enabled, breakpoints apply when viewport is **greater than** the specified width.
+</ParamField>
+
+```javascript
+$('.slider').slick({
+  mobileFirst: true,
+  slidesToShow: 1,  // Default for mobile
+  slidesToScroll: 1,
+  
+  responsive: [
+    {
+      breakpoint: 480,   // Applies when width > 480px
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 768,   // Applies when width > 768px
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3
+      }
+    },
+    {
+      breakpoint: 1024,  // Applies when width > 1024px
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 4
+      }
+    }
+  ]
+});
+```
+
+<Note>
+With mobile-first approach, define your smallest screen settings as defaults and progressively enhance for larger screens.
+</Note>
+
+## RespondTo Option
+
+Control what dimension the responsive system measures against.
+
+<ParamField path="respondTo" type="string" default="window">
+  Width that responsive object responds to. Options:
+  - `'window'` - Respond to browser window width
+  - `'slider'` - Respond to slider container width
+  - `'min'` - Respond to the smaller of window or slider width
+</ParamField>
+
+```javascript
+$('.slider').slick({
+  respondTo: 'slider',  // Respond to slider container width
+  responsive: [
+    {
+      breakpoint: 800,
+      settings: {
+        slidesToShow: 2
+      }
+    }
+  ]
+});
+```
+
+### When to Use Each RespondTo Mode
+
+<Accordion title="window (default)">
+  Best for full-width carousels or when your slider should respond to overall viewport changes:
+  
+  ```javascript
+  $('.hero-slider').slick({
+    respondTo: 'window',
+    slidesToShow: 1
+  });
+  ```
+</Accordion>
+
+<Accordion title="slider">
+  Ideal when your slider is in a container with its own responsive behavior:
+  
+  ```javascript
+  $('.sidebar-slider').slick({
+    respondTo: 'slider',  // Responds to sidebar width, not window
+    responsive: [
+      {
+        breakpoint: 300,
+        settings: { slidesToShow: 1 }
+      }
+    ]
+  });
+  ```
+</Accordion>
+
+<Accordion title="min">
+  Use when you want the slider to respond to whichever is smaller:
+  
+  ```javascript
+  $('.adaptive-slider').slick({
+    respondTo: 'min',  // Most conservative approach
+    responsive: [/* breakpoints */]
+  });
+  ```
+</Accordion>
+
+## Unslick at Breakpoints
+
+You can completely disable Slick at specific breakpoints by setting `settings` to `"unslick"`.
+
+```javascript
+$('.slider').slick({
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  
+  responsive: [
+    {
+      breakpoint: 600,
+      settings: "unslick"  // Destroys slick at this breakpoint
+    }
+  ]
+});
+```
+
+<Warning>
+When Slick is destroyed via `"unslick"`, all styling and structure added by Slick is removed. The slides return to their original markup.
+</Warning>
+
+### When to Unslick
+
+- On mobile devices where a simple scrollable list works better
+- When you have only 1-2 slides on small screens
+- To improve mobile performance on content-heavy pages
+- When native scrolling provides better UX on small devices
+
+## Responsive Configuration Patterns
+
+### E-commerce Product Grid
+
+```javascript
+$('.product-grid').slick({
+  infinite: true,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  dots: false,
+  arrows: true,
+  
+  responsive: [
+    {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3
+      }
+    },
+    {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 576,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: false
+      }
+    }
+  ]
+});
+```
+
+### Content Slider with Unslick
+
+```javascript
+$('.content-slider').slick({
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  centerMode: true,
+  centerPadding: '60px',
+  
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 2,
+        centerPadding: '40px'
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: "unslick"  // Regular stacked layout on mobile
+    }
+  ]
+});
+```
+
+### Mobile-First Gallery
+
+```javascript
+$('.gallery').slick({
+  mobileFirst: true,
+  
+  // Mobile default (< 480px)
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  dots: true,
+  arrows: false,
+  
+  responsive: [
+    {
+      breakpoint: 480,  // > 480px
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        arrows: true
+      }
+    },
+    {
+      breakpoint: 768,  // > 768px
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3
+      }
+    },
+    {
+      breakpoint: 1024, // > 1024px
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        infinite: true
+      }
+    }
+  ]
+});
+```
+
+### Testimonial Carousel
+
+```javascript
+$('.testimonials').slick({
+  centerMode: true,
+  centerPadding: '15%',
+  slidesToShow: 3,
+  autoplay: true,
+  autoplaySpeed: 4000,
+  
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        centerPadding: '10%',
+        slidesToShow: 2
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        centerMode: true,
+        centerPadding: '20px',
+        slidesToShow: 1,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        centerMode: false,
+        slidesToShow: 1,
+        dots: true,
+        arrows: false
+      }
+    }
+  ]
+});
+```
+
+## Dynamically Updating Responsive Settings
+
+You can change responsive settings after initialization:
+
+```javascript
+// Update responsive breakpoints
+$('.slider').slick('slickSetOption', 'responsive', [
+  {
+    breakpoint: 1024,
+    settings: {
+      slidesToShow: 3,
+      infinite: true
+    }
+  },
+  {
+    breakpoint: 600,
+    settings: {
+      slidesToShow: 2,
+      dots: true
+    }
+  }
+], true);
+```
+
+## Breakpoint Event
+
+Slick fires a `breakpoint` event when a breakpoint is triggered:
+
+```javascript
+$('.slider').on('breakpoint', function(event, slick, breakpoint) {
+  console.log('Breakpoint hit:', breakpoint);
+  
+  // Perform custom actions based on breakpoint
+  if (breakpoint === 768) {
+    // Do something specific at this breakpoint
+  }
+});
+
+$('.slider').slick({
+  responsive: [/* breakpoint config */]
+});
+```
+
+<Note>
+The breakpoint event fires **after** the settings have been applied and the slider has been refreshed.
+</Note>
+
+## Common Responsive Breakpoints
+
+Here are common breakpoint values based on popular device sizes:
+
+```javascript
+// Bootstrap-style breakpoints
+responsive: [
+  {
+    breakpoint: 1200,  // Large desktops
+    settings: { /* ... */ }
+  },
+  {
+    breakpoint: 992,   // Desktops
+    settings: { /* ... */ }
+  },
+  {
+    breakpoint: 768,   // Tablets
+    settings: { /* ... */ }
+  },
+  {
+    breakpoint: 576,   // Large phones
+    settings: { /* ... */ }
+  },
+  {
+    breakpoint: 480,   // Small phones
+    settings: { /* ... */ }
+  }
+]
+```
+
+## Responsive Best Practices
+
+<Card title="Start with Mobile">
+  Even when using desktop-first (default), consider the mobile experience first:
+  
+  - Test on actual devices, not just browser dev tools
+  - Ensure touch targets are large enough (minimum 44x44px)
+  - Consider using `"unslick"` on very small screens
+  - Disable arrows on mobile if they're hard to tap
+</Card>
+
+<Card title="Performance Considerations">
+  - Reduce `slidesToShow` on smaller screens to improve performance
+  - Use `lazyLoad` more aggressively on mobile
+  - Consider disabling autoplay on mobile to save battery
+  - Test animation performance on mid-range devices
+</Card>
+
+<Card title="Test Across Breakpoints">
+  - Test behavior at exact breakpoint widths (e.g., 768px, 769px)
+  - Check that settings transition smoothly
+  - Verify that the `breakpoint` event fires correctly
+  - Ensure no layout shifts occur during breakpoint changes
+</Card>
+
+<Card title="Combine with CSS Media Queries">
+  Use CSS media queries for visual styling while JavaScript handles behavior:
+  
+  ```css
+  /* Match your JavaScript breakpoints */
+  @media (max-width: 768px) {
+    .slick-arrow {
+      display: none !important;
+    }
+    
+    .slick-dots {
+      bottom: -30px;
+    }
+  }
+  ```
+</Card>
+
+## Debugging Responsive Issues
+
+### Check Active Breakpoint
+
+You can inspect which breakpoint is currently active:
+
+```javascript
+var slickInstance = $('.slider').slick('getSlick');
+console.log('Active breakpoint:', slickInstance.activeBreakpoint);
+```
+
+### Monitor Breakpoint Changes
+
+```javascript
+$('.slider').on('breakpoint', function(event, slick, breakpoint) {
+  console.log('Breakpoint changed to:', breakpoint);
+  console.log('Current settings:', slick.options);
+});
+```
+
+### Force Breakpoint Refresh
+
+If your slider isn't responding to window resizes:
+
+```javascript
+// Manually trigger a responsive check
+$('.slider').slick('checkResponsive');
+
+// Force a complete refresh
+$('.slider').slick('refresh');
+```
+
+## Window Resize Handling
+
+Slick automatically handles window resize events with a 50ms debounce. From the source code:
+
+```javascript
+// Slick's internal resize handler (from slick.js:1979-1991)
+Slick.prototype.resize = function() {
+  var _ = this;
+  
+  if ($(window).width() !== _.windowWidth) {
+    clearTimeout(_.windowDelay);
+    _.windowDelay = window.setTimeout(function() {
+      _.windowWidth = $(window).width();
+      _.checkResponsive();
+      if(!_.unslicked) { _.setPosition(); }
+    }, 50);
+  }
+};
+```
+
+<Info>
+The 50ms debounce prevents excessive recalculations during window resize. This is optimized for performance while remaining responsive.
+</Info>
+
+## Responsive Settings Inheritance
+
+Settings at breakpoints inherit from the base configuration. Only specify what changes:
+
+```javascript
+$('.slider').slick({
+  // Base settings (inherited by all breakpoints unless overridden)
+  infinite: true,
+  speed: 500,
+  autoplay: true,
+  slidesToShow: 4,
+  
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        // Only override what changes
+        slidesToShow: 2,
+        autoplay: false  // Disable autoplay at this breakpoint
+        // infinite: true and speed: 500 are inherited
+      }
+    }
+  ]
+});
+```
+
+## Related Documentation
+
+- [Configuration](/concepts/configuration) - Complete settings reference
+- [Accessibility](/concepts/accessibility) - Responsive accessibility considerations
+- [Methods](/api/methods) - Control sliders dynamically
+- [Events](/api/events) - Handle breakpoint changes

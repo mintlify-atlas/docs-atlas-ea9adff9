@@ -1,0 +1,412 @@
+---
+title: Sass Variables
+description: Complete reference for customizing Slick Carousel theme with Sass variables
+---
+
+# Sass Variables
+
+Slick Carousel provides a comprehensive set of Sass variables that allow you to customize the theme without modifying the core styles. These variables are defined in `slick-theme.scss`.
+
+## Usage
+
+To customize the theme, define your variable overrides **before** importing the Slick theme:
+
+```scss
+// Your custom values
+$slick-arrow-color: #333;
+$slick-dot-color: #007bff;
+$slick-dot-size: 8px;
+
+// Then import Slick theme
+@import "slick-carousel/slick/slick-theme.scss";
+```
+
+## Available Variables
+
+### Font and Asset Paths
+
+<ParamField path="$slick-font-path" type="string" default='"./fonts/"'>
+  Directory path for the slick icon font files. Set this to match where your font files are located relative to your compiled CSS.
+  
+  ```scss
+  $slick-font-path: "../fonts/" !default;
+  ```
+</ParamField>
+
+<ParamField path="$slick-font-family" type="string" default='"slick"'>
+  Font-family name for slick icon font. Used for arrow and dot characters.
+  
+  ```scss
+  $slick-font-family: "slick" !default;
+  ```
+</ParamField>
+
+<ParamField path="$slick-loader-path" type="string" default='"./"'>
+  Directory path for the ajax-loader.gif image displayed during slide loading.
+  
+  ```scss
+  $slick-loader-path: "../images/" !default;
+  ```
+</ParamField>
+
+---
+
+### Arrow Customization
+
+<ParamField path="$slick-arrow-color" type="color" default="white">
+  Color of the left/right arrow icons.
+  
+  ```scss
+  $slick-arrow-color: white !default;
+  ```
+  
+  **Example:**
+  ```scss
+  // Dark arrows
+  $slick-arrow-color: #333;
+  
+  // Brand color arrows
+  $slick-arrow-color: #007bff;
+  ```
+</ParamField>
+
+<ParamField path="$slick-prev-character" type="string" default='"\2190"'>
+  Unicode character code for the previous arrow icon. Default is `←` (left arrow).
+  
+  ```scss
+  $slick-prev-character: "\2190" !default;
+  ```
+  
+  **Common Unicode characters:**
+  - `"\2190"` - ← (default left arrow)
+  - `"\2039"` - ‹ (single left-pointing angle)
+  - `"\00AB"` - « (left-pointing double angle)
+  - `"\25C0"` - ◀ (left-pointing triangle)
+  
+  **Example:**
+  ```scss
+  $slick-prev-character: "\2039";
+  ```
+</ParamField>
+
+<ParamField path="$slick-next-character" type="string" default='"\2192"'>
+  Unicode character code for the next arrow icon. Default is `→` (right arrow).
+  
+  ```scss
+  $slick-next-character: "\2192" !default;
+  ```
+  
+  **Common Unicode characters:**
+  - `"\2192"` - → (default right arrow)
+  - `"\203A"` - › (single right-pointing angle)
+  - `"\00BB"` - » (right-pointing double angle)
+  - `"\25B6"` - ▶ (right-pointing triangle)
+  
+  **Example:**
+  ```scss
+  $slick-next-character: "\203A";
+  ```
+</ParamField>
+
+---
+
+### Dot Navigation
+
+<ParamField path="$slick-dot-color" type="color" default="black">
+  Color of the navigation dots in their default (inactive) state.
+  
+  ```scss
+  $slick-dot-color: black !default;
+  ```
+  
+  **Example:**
+  ```scss
+  // Gray dots
+  $slick-dot-color: #999;
+  
+  // Blue dots
+  $slick-dot-color: #007bff;
+  ```
+</ParamField>
+
+<ParamField path="$slick-dot-color-active" type="color" default="$slick-dot-color">
+  Color of the active navigation dot. Defaults to the same as `$slick-dot-color`.
+  
+  ```scss
+  $slick-dot-color-active: $slick-dot-color !default;
+  ```
+  
+  **Example:**
+  ```scss
+  // Inactive dots gray, active dot blue
+  $slick-dot-color: #ccc;
+  $slick-dot-color-active: #007bff;
+  ```
+</ParamField>
+
+<ParamField path="$slick-dot-character" type="string" default='"\2022"'>
+  Unicode character code for the navigation dot icon. Default is `•` (bullet).
+  
+  ```scss
+  $slick-dot-character: "\2022" !default;
+  ```
+  
+  **Common Unicode characters:**
+  - `"\2022"` - • (default bullet)
+  - `"\25CF"` - ● (black circle)
+  - `"\25CB"` - ○ (white circle)
+  - `"\25A0"` - ■ (black square)
+  - `"\25A1"` - □ (white square)
+  
+  **Example:**
+  ```scss
+  // Use circles instead of bullets
+  $slick-dot-character: "\25CF";
+  ```
+</ParamField>
+
+<ParamField path="$slick-dot-size" type="pixels" default="6px">
+  Font-size of the navigation dots.
+  
+  ```scss
+  $slick-dot-size: 6px !default;
+  ```
+  
+  **Example:**
+  ```scss
+  // Larger dots
+  $slick-dot-size: 10px;
+  
+  // Smaller dots
+  $slick-dot-size: 4px;
+  ```
+</ParamField>
+
+---
+
+### Opacity Settings
+
+<ParamField path="$slick-opacity-default" type="number" default="0.75">
+  Default opacity for arrows and active dots. Value between 0 and 1.
+  
+  ```scss
+  $slick-opacity-default: 0.75 !default;
+  ```
+  
+  **Example:**
+  ```scss
+  // Fully opaque by default
+  $slick-opacity-default: 1;
+  
+  // More subtle
+  $slick-opacity-default: 0.5;
+  ```
+</ParamField>
+
+<ParamField path="$slick-opacity-on-hover" type="number" default="1">
+  Opacity for arrows and dots when hovered or focused. Value between 0 and 1.
+  
+  ```scss
+  $slick-opacity-on-hover: 1 !default;
+  ```
+  
+  **Example:**
+  ```scss
+  // Slightly transparent on hover
+  $slick-opacity-on-hover: 0.9;
+  ```
+</ParamField>
+
+<ParamField path="$slick-opacity-not-active" type="number" default="0.25">
+  Opacity for inactive/disabled elements. Value between 0 and 1.
+  
+  ```scss
+  $slick-opacity-not-active: 0.25 !default;
+  ```
+  
+  **Example:**
+  ```scss
+  // More visible when inactive
+  $slick-opacity-not-active: 0.5;
+  
+  // Almost invisible when inactive
+  $slick-opacity-not-active: 0.1;
+  ```
+</ParamField>
+
+---
+
+## Complete Customization Example
+
+### Light Theme
+
+```scss
+// Light theme customization
+$slick-font-path: "../fonts/";
+$slick-loader-path: "../images/";
+
+$slick-arrow-color: #333;
+$slick-dot-color: #999;
+$slick-dot-color-active: #333;
+$slick-dot-size: 8px;
+
+$slick-opacity-default: 0.8;
+$slick-opacity-on-hover: 1;
+$slick-opacity-not-active: 0.3;
+
+@import "slick-carousel/slick/slick";
+@import "slick-carousel/slick/slick-theme";
+```
+
+### Dark Theme
+
+```scss
+// Dark theme customization
+$slick-font-path: "../fonts/";
+$slick-loader-path: "../images/";
+
+$slick-arrow-color: #fff;
+$slick-dot-color: rgba(255, 255, 255, 0.5);
+$slick-dot-color-active: #fff;
+$slick-dot-size: 8px;
+
+$slick-opacity-default: 0.7;
+$slick-opacity-on-hover: 1;
+$slick-opacity-not-active: 0.2;
+
+@import "slick-carousel/slick/slick";
+@import "slick-carousel/slick/slick-theme";
+```
+
+### Brand Theme
+
+```scss
+// Brand color theme
+$slick-font-path: "../fonts/";
+$slick-loader-path: "../images/";
+
+// Use brand colors
+$brand-primary: #007bff;
+$brand-secondary: #6c757d;
+
+$slick-arrow-color: $brand-primary;
+$slick-dot-color: $brand-secondary;
+$slick-dot-color-active: $brand-primary;
+$slick-dot-size: 10px;
+
+// Use angle brackets for arrows
+$slick-prev-character: "\2039";
+$slick-next-character: "\203A";
+
+// Use circles for dots
+$slick-dot-character: "\25CF";
+
+$slick-opacity-default: 1;
+$slick-opacity-on-hover: 1;
+$slick-opacity-not-active: 0.3;
+
+@import "slick-carousel/slick/slick";
+@import "slick-carousel/slick/slick-theme";
+```
+
+### Minimalist Theme
+
+```scss
+// Minimalist theme with custom characters
+$slick-font-path: "../fonts/";
+$slick-loader-path: "../images/";
+
+$slick-arrow-color: #000;
+$slick-dot-color: #ccc;
+$slick-dot-color-active: #000;
+$slick-dot-size: 6px;
+
+// Simple angle brackets
+$slick-prev-character: "\2039";
+$slick-next-character: "\203A";
+
+// Hollow circles
+$slick-dot-character: "\25CB";
+
+$slick-opacity-default: 1;
+$slick-opacity-on-hover: 1;
+$slick-opacity-not-active: 0.4;
+
+@import "slick-carousel/slick/slick";
+@import "slick-carousel/slick/slick-theme";
+```
+
+## Unicode Character Reference
+
+Here are some useful Unicode characters you can use for arrows and dots:
+
+<AccordionGroup>
+  <Accordion title="Arrow Characters">
+    - `\2190` - ← (leftwards arrow)
+    - `\2192` - → (rightwards arrow)
+    - `\2039` - ‹ (single left angle)
+    - `\203A` - › (single right angle)
+    - `\00AB` - « (double left angle)
+    - `\00BB` - » (double right angle)
+    - `\25C0` - ◀ (left triangle)
+    - `\25B6` - ▶ (right triangle)
+    - `\25C4` - ◄ (left pointer)
+    - `\25BA` - ► (right pointer)
+    - `\2329` - 〈 (left angle bracket)
+    - `\232A` - 〉 (right angle bracket)
+  </Accordion>
+  
+  <Accordion title="Dot/Bullet Characters">
+    - `\2022` - • (bullet)
+    - `\25CF` - ● (black circle)
+    - `\25CB` - ○ (white circle)
+    - `\25A0` - ■ (black square)
+    - `\25A1` - □ (white square)
+    - `\25C6` - ◆ (black diamond)
+    - `\25C7` - ◇ (white diamond)
+    - `\2023` - ‣ (triangular bullet)
+    - `\2043` - ⁃ (hyphen bullet)
+    - `\204E` - ⁎ (low asterisk)
+    - `\2605` - ★ (black star)
+    - `\2606` - ☆ (white star)
+  </Accordion>
+</AccordionGroup>
+
+## Build Process
+
+After defining your variables, compile your Sass:
+
+```bash
+# Using node-sass
+node-sass src/styles.scss dist/styles.css
+
+# Using dart-sass
+sass src/styles.scss dist/styles.css
+
+# With source maps
+sass --source-map src/styles.scss dist/styles.css
+```
+
+## Additional Customization
+
+While these variables cover the most common customization needs, you can further customize Slick by:
+
+1. **Overriding CSS classes** - Add your own CSS after importing Slick
+2. **Custom arrow HTML** - Use the `prevArrow` and `nextArrow` settings
+3. **Custom dots** - Use the `customPaging` option to create custom pagination
+4. **Additional styling** - Import the base `slick.scss` without the theme and write your own
+
+```scss
+// Only import base styles
+@import "slick-carousel/slick/slick";
+
+// Write your own theme
+.slick-prev,
+.slick-next {
+  // Your custom arrow styles
+}
+
+.slick-dots {
+  // Your custom dot styles
+}
+```

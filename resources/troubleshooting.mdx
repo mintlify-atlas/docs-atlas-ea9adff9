@@ -1,0 +1,695 @@
+---
+title: Troubleshooting
+description: Common issues and solutions for Slick Carousel
+---
+
+## Overview
+
+This guide covers common issues you might encounter when implementing Slick Carousel and how to resolve them.
+
+<Note>
+  Before reporting an issue, please check this troubleshooting guide and search existing issues on [GitHub](https://github.com/kenwheeler/slick/issues).
+</Note>
+
+## Getting Help
+
+<AccordionGroup>
+  <Accordion title="Where to Get Support">
+    If you're having problems getting Slick to work:
+
+    1. **Stack Overflow**: Search or ask at [stackoverflow.com/questions/tagged/slick](https://stackoverflow.com/search?q=slick+carousel)
+    2. **Gitter Chat**: Join the community at [gitter.im/kenwheeler/slick](https://gitter.im/kenwheeler/slick)
+    3. **Documentation**: Review the complete docs
+    4. **GitHub Issues**: For bug reports only (requires test case)
+
+    <Warning>
+      GitHub Issues is **not** for general support questions. Use Stack Overflow or Gitter for help.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Before Reporting a Bug">
+    All bug reports require a **jsFiddle test case**:
+
+    1. Fork this baseline JSFiddle: [https://jsfiddle.net/o1yehw0g/1/](https://jsfiddle.net/o1yehw0g/1/)
+    2. Reproduce your bug with minimal code
+    3. Use non-minified files (we cannot debug .min.js)
+    4. Include only the bare minimum HTML, CSS, and JavaScript
+
+    <Warning>
+      Issues without a test case may be closed without response.
+    </Warning>
+  </Accordion>
+</AccordionGroup>
+
+## Common Issues
+
+### Initialization Problems
+
+<AccordionGroup>
+  <Accordion title="Slick is not initializing">
+    **Symptoms**: Carousel doesn't appear or remains as a list.
+
+    **Common Causes**:
+
+    1. **jQuery not loaded or wrong version**
+       ```html
+       <!-- ✅ Correct order -->
+       <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+       <script src="slick/slick.min.js"></script>
+       <script>
+         $(document).ready(function(){
+           $('.slider').slick();
+         });
+       </script>
+       ```
+
+    2. **Initialization before DOM ready**
+       ```javascript
+       // ❌ Wrong - might run before DOM is ready
+       $('.slider').slick();
+
+       // ✅ Correct
+       $(document).ready(function(){
+         $('.slider').slick();
+       });
+       ```
+
+    3. **CSS files not loaded**
+       ```html
+       <!-- Both CSS files required -->
+       <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+       <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+       ```
+
+    4. **Incorrect selector**
+       ```javascript
+       // ❌ Wrong - selector doesn't match
+       $('.slideshow').slick();  // But element has class="slider"
+
+       // ✅ Correct
+       $('.slider').slick();
+       ```
+  </Accordion>
+
+  <Accordion title="Console errors: '$(...).slick is not a function'">
+    **Cause**: jQuery is not loaded, or Slick is loaded before jQuery.
+
+    **Solution**: Ensure correct script loading order:
+
+    ```html
+    <!-- 1. jQuery first (required) -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    
+    <!-- 2. Then Slick -->
+    <script src="slick/slick.min.js"></script>
+    
+    <!-- 3. Then your initialization code -->
+    <script>
+      $(document).ready(function(){
+        $('.slider').slick();
+      });
+    </script>
+    ```
+  </Accordion>
+
+  <Accordion title="Slider shows all slides at once">
+    **Cause**: CSS files not loaded properly.
+
+    **Solution**:
+
+    1. Verify CSS files are loaded:
+       ```html
+       <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+       ```
+
+    2. Check browser developer tools Network tab for 404 errors
+
+    3. Verify file paths are correct:
+       ```html
+       <!-- If slick folder is in same directory as HTML -->
+       <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+       
+       <!-- If using CDN -->
+       <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+       ```
+  </Accordion>
+</AccordionGroup>
+
+### Display & Layout Issues
+
+<AccordionGroup>
+  <Accordion title="Slides not displaying correctly (width/height issues)">
+    **Problem**: Slides have incorrect dimensions or overlap.
+
+    **Solutions**:
+
+    1. **Ensure parent container has defined dimensions**:
+       ```css
+       .slider {
+         width: 100%;
+         max-width: 1200px;
+       }
+       ```
+
+    2. **Use `adaptiveHeight` for varying slide heights**:
+       ```javascript
+       $('.slider').slick({
+         adaptiveHeight: true
+       });
+       ```
+
+    3. **Call `setPosition` after dynamic content loads**:
+       ```javascript
+       $('.slider').slick();
+       
+       // After images load or content changes
+       $('.slider').slick('setPosition');
+       ```
+
+    4. **For images, ensure they're loaded**:
+       ```javascript
+       $(window).on('load', function() {
+         $('.slider').slick('setPosition');
+       });
+       ```
+  </Accordion>
+
+  <Accordion title="Images not showing or broken layout">
+    **Problem**: Images don't display or carousel layout breaks.
+
+    **Solutions**:
+
+    1. **Use lazy loading**:
+       ```html
+       <div class="slider">
+         <div><img data-lazy="image1.jpg" /></div>
+         <div><img data-lazy="image2.jpg" /></div>
+       </div>
+       
+       <script>
+         $('.slider').slick({
+           lazyLoad: 'ondemand'
+         });
+       </script>
+       ```
+
+    2. **Initialize after images load**:
+       ```javascript
+       $(window).on('load', function() {
+         $('.slider').slick();
+       });
+       ```
+
+    3. **Set explicit image dimensions**:
+       ```css
+       .slider img {
+         width: 100%;
+         height: auto;
+         display: block;
+       }
+       ```
+  </Accordion>
+
+  <Accordion title="Arrows or dots not appearing">
+    **Problem**: Navigation controls are missing.
+
+    **Solutions**:
+
+    1. **Include slick-theme.css**:
+       ```html
+       <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+       ```
+
+    2. **Verify options are enabled**:
+       ```javascript
+       $('.slider').slick({
+         arrows: true,  // Enable arrows (default: true)
+         dots: true     // Enable dots (default: false)
+       });
+       ```
+
+    3. **Check font files path**:
+       ```scss
+       // In your Sass variables
+       $slick-font-path: "./fonts/" !default;
+       $slick-loader-path: "./" !default;
+       ```
+
+    4. **Use custom arrows**:
+       ```javascript
+       $('.slider').slick({
+         prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+         nextArrow: '<button type="button" class="slick-next">Next</button>'
+       });
+       ```
+  </Accordion>
+
+  <Accordion title="Slider not responsive / breaking on mobile">
+    **Problem**: Carousel doesn't adapt to smaller screens.
+
+    **Solution**: Use responsive breakpoints:
+
+    ```javascript
+    $('.slider').slick({
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3
+          }
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1
+          }
+        }
+      ]
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Functionality Issues
+
+<AccordionGroup>
+  <Accordion title="Events not firing">
+    **Problem**: Event handlers don't execute.
+
+    **Solution**: Bind events **before** initialization:
+
+    ```javascript
+    // ❌ Wrong - event bound after init
+    $('.slider').slick();
+    $('.slider').on('afterChange', function(event, slick, currentSlide) {
+      console.log(currentSlide);
+    });
+
+    // ✅ Correct - event bound before init
+    $('.slider')
+      .on('afterChange', function(event, slick, currentSlide) {
+        console.log(currentSlide);
+      })
+      .slick();
+    ```
+
+    <Note>
+      The `init` event must be bound before calling `.slick()` or it won't fire.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Touch/swipe not working on mobile">
+    **Problem**: Cannot swipe slides on touch devices.
+
+    **Solutions**:
+
+    1. **Verify touch options are enabled**:
+       ```javascript
+       $('.slider').slick({
+         swipe: true,        // Default: true
+         touchMove: true,    // Default: true
+         touchThreshold: 5   // Default: 5
+       });
+       ```
+
+    2. **Check for CSS interference**:
+       ```css
+       /* Remove if present */
+       .slider {
+         /* touch-action: none; */ /* Remove this */
+       }
+       ```
+
+    3. **Increase touch threshold for better detection**:
+       ```javascript
+       $('.slider').slick({
+         touchThreshold: 10  // More sensitive
+       });
+       ```
+  </Accordion>
+
+  <Accordion title="Autoplay not working or stopping unexpectedly">
+    **Problem**: Autoplay doesn't start or stops after interaction.
+
+    **Solutions**:
+
+    1. **Basic autoplay setup**:
+       ```javascript
+       $('.slider').slick({
+         autoplay: true,
+         autoplaySpeed: 3000  // 3 seconds
+       });
+       ```
+
+    2. **Prevent pausing on hover**:
+       ```javascript
+       $('.slider').slick({
+         autoplay: true,
+         pauseOnHover: false,
+         pauseOnFocus: false
+       });
+       ```
+
+    3. **Manually control autoplay**:
+       ```javascript
+       // Stop autoplay
+       $('.slider').slick('slickPause');
+       
+       // Start autoplay
+       $('.slider').slick('slickPlay');
+       ```
+  </Accordion>
+
+  <Accordion title="Methods not working">
+    **Problem**: Method calls fail or return undefined.
+
+    **Solution**: Use correct 1.4+ method syntax:
+
+    ```javascript
+    // Initialize
+    $('.slider').slick();
+
+    // ❌ Wrong
+    var currentSlide = $('.slider').slickCurrentSlide();
+
+    // ✅ Correct
+    var currentSlide = $('.slider').slick('slickCurrentSlide');
+
+    // Other method examples
+    $('.slider').slick('slickNext');           // Next slide
+    $('.slider').slick('slickPrev');           // Previous slide
+    $('.slider').slick('slickGoTo', 2);        // Go to slide 2
+    $('.slider').slick('slickAdd', '<div>New slide</div>');  // Add slide
+    $('.slider').slick('unslick');             // Destroy
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Dynamic Content Issues
+
+<AccordionGroup>
+  <Accordion title="Adding/removing slides dynamically">
+    **Problem**: Dynamic slide changes don't work properly.
+
+    **Solutions**:
+
+    1. **Add slides**:
+       ```javascript
+       // Add to end
+       $('.slider').slick('slickAdd', '<div>New slide</div>');
+       
+       // Add at specific index
+       $('.slider').slick('slickAdd', '<div>New slide</div>', 2);
+       
+       // Add before specific index
+       $('.slider').slick('slickAdd', '<div>New slide</div>', 2, true);
+       ```
+
+    2. **Remove slides**:
+       ```javascript
+       // Remove by index
+       $('.slider').slick('slickRemove', 2);
+       
+       // Remove first slide
+       $('.slider').slick('slickRemove', 0);
+       ```
+
+    3. **Refresh after external changes**:
+       ```javascript
+       // If you manually change DOM
+       $('.slider').slick('unslick');  // Destroy
+       $('.slider').slick();           // Reinitialize
+       ```
+  </Accordion>
+
+  <Accordion title="Slick in hidden container (tabs, modals, accordions)">
+    **Problem**: Slider doesn't display correctly when parent is initially hidden.
+
+    **Solution**: Reinitialize or call `setPosition` when container becomes visible:
+
+    ```javascript
+    // Initialize normally
+    $('.slider').slick();
+
+    // When tab/modal becomes visible
+    $('#myTab').on('shown.bs.tab', function() {
+      $('.slider').slick('setPosition');
+    });
+
+    // For modals
+    $('#myModal').on('shown.bs.modal', function() {
+      $('.slider').slick('setPosition');
+    });
+
+    // Or reinitialize
+    $('#myTab').on('shown.bs.tab', function() {
+      $('.slider').slick('unslick').slick();
+    });
+    ```
+  </Accordion>
+
+  <Accordion title="AJAX loaded content">
+    **Problem**: Content loaded via AJAX doesn't display correctly.
+
+    **Solution**: Initialize Slick after AJAX completes:
+
+    ```javascript
+    $.ajax({
+      url: '/api/slides',
+      success: function(data) {
+        // Add content to DOM
+        $('.slider').html(data);
+        
+        // Initialize Slick
+        $('.slider').slick({
+          slidesToShow: 3,
+          slidesToScroll: 1
+        });
+      }
+    });
+
+    // Or if already initialized
+    $.ajax({
+      url: '/api/slides',
+      success: function(data) {
+        $('.slider').slick('unslick');  // Destroy
+        $('.slider').html(data);         // Update content
+        $('.slider').slick();            // Reinitialize
+      }
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Performance Issues
+
+<AccordionGroup>
+  <Accordion title="Slider is slow or laggy">
+    **Problem**: Animations are choppy or slider feels sluggish.
+
+    **Solutions**:
+
+    1. **Enable hardware acceleration**:
+       ```javascript
+       $('.slider').slick({
+         useCSS: true,
+         useTransform: true  // Uses GPU acceleration
+       });
+       ```
+
+    2. **Optimize images**:
+       - Use appropriately sized images
+       - Compress images
+       - Use lazy loading:
+       ```javascript
+       $('.slider').slick({
+         lazyLoad: 'ondemand'
+       });
+       ```
+
+    3. **Reduce slides shown**:
+       ```javascript
+       $('.slider').slick({
+         slidesToShow: 3,  // Show fewer slides
+         infinite: false   // Disable infinite if not needed
+       });
+       ```
+
+    4. **Increase animation speed**:
+       ```javascript
+       $('.slider').slick({
+         speed: 300  // Faster transitions feel snappier
+       });
+       ```
+  </Accordion>
+
+  <Accordion title="Memory leaks or performance degradation over time">
+    **Problem**: Page becomes slower after using slider for a while.
+
+    **Solution**: Properly destroy Slick when removing from DOM:
+
+    ```javascript
+    // Before removing slider from DOM
+    $('.slider').slick('unslick');
+
+    // Example with single-page app
+    function cleanupPage() {
+      $('.slider').slick('unslick');
+      // Remove event listeners
+      $('.slider').off('afterChange');
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Browser-Specific Issues
+
+<AccordionGroup>
+  <Accordion title="Issues in Internet Explorer">
+    **Problem**: Slider doesn't work in IE8-11.
+
+    **Solutions**:
+
+    1. **Use compatible jQuery version**:
+       ```html
+       <!-- For IE8-9 support -->
+       <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+       ```
+
+    2. **Disable CSS3 features for IE8-9**:
+       ```javascript
+       $('.slider').slick({
+         useCSS: false,       // Fallback to jQuery animate
+         useTransform: false
+       });
+       ```
+
+    3. **Check for console errors** (use IE Developer Tools F12)
+  </Accordion>
+
+  <Accordion title="Safari/iOS specific issues">
+    **Problem**: Slider behaves differently in Safari or iOS.
+
+    **Solutions**:
+
+    1. **Add webkit prefixes in custom CSS**:
+       ```css
+       .slick-slide {
+         -webkit-transform: translate3d(0, 0, 0);
+         transform: translate3d(0, 0, 0);
+       }
+       ```
+
+    2. **Adjust touch threshold**:
+       ```javascript
+       $('.slider').slick({
+         touchThreshold: 10
+       });
+       ```
+  </Accordion>
+</AccordionGroup>
+
+## Debugging Tips
+
+<AccordionGroup>
+  <Accordion title="Enable console logging">
+    Monitor Slick events in the console:
+
+    ```javascript
+    $('.slider')
+      .on('init', function(event, slick) {
+        console.log('Slick initialized:', slick);
+      })
+      .on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+        console.log('Changing from', currentSlide, 'to', nextSlide);
+      })
+      .on('afterChange', function(event, slick, currentSlide) {
+        console.log('Changed to slide', currentSlide);
+      })
+      .slick();
+    ```
+  </Accordion>
+
+  <Accordion title="Inspect slider instance">
+    Access the Slick instance for debugging:
+
+    ```javascript
+    // Get the Slick instance
+    var slickInstance = $('.slider').slick('getSlick');
+    console.log(slickInstance);
+
+    // Check current settings
+    var speed = $('.slider').slick('slickGetOption', 'speed');
+    console.log('Current speed:', speed);
+    ```
+  </Accordion>
+
+  <Accordion title="Verify initialization">
+    Check if Slick is properly initialized:
+
+    ```javascript
+    if ($('.slider').hasClass('slick-initialized')) {
+      console.log('Slick is initialized');
+    } else {
+      console.log('Slick is NOT initialized');
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Creating a Test Case
+
+When reporting bugs, you must provide a jsFiddle:
+
+<Steps>
+  <Step title="Fork the baseline JSFiddle">
+    Start with: [https://jsfiddle.net/o1yehw0g/1/](https://jsfiddle.net/o1yehw0g/1/)
+  </Step>
+
+  <Step title="Reproduce the bug">
+    Add only the minimum code needed to demonstrate the issue:
+    - Remove unrelated HTML
+    - Remove unrelated CSS
+    - Remove unrelated JavaScript
+    - Use non-minified files
+  </Step>
+
+  <Step title="Provide context">
+    In your issue report, include:
+    - Link to your jsFiddle
+    - Steps to reproduce
+    - Expected behavior
+    - Observed behavior
+    - Browser/version information
+    - jQuery/Slick versions
+  </Step>
+</Steps>
+
+<Warning>
+  Issues without a proper test case will likely be closed.
+</Warning>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Browser Support" icon="browser" href="/resources/browser-support">
+    Check compatibility requirements
+  </Card>
+  <Card title="Migration Guide" icon="arrow-right" href="/resources/migration">
+    Upgrade to newer versions
+  </Card>
+  <Card title="GitHub Issues" icon="github" href="https://github.com/kenwheeler/slick/issues">
+    Search existing issues
+  </Card>
+  <Card title="Stack Overflow" icon="stack-overflow" href="https://stackoverflow.com/questions/tagged/slick">
+    Community Q&A
+  </Card>
+</CardGroup>

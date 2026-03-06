@@ -1,0 +1,176 @@
+---
+title: Installation
+description: Install Slick Carousel via npm, CDN, or direct download to get started quickly
+---
+
+## Installation Methods
+
+Slick Carousel can be installed in several ways depending on your project setup and preferences.
+
+<Note>
+  Remember that Slick requires jQuery 1.7 or higher as a peer dependency.
+</Note>
+
+## Package Managers
+
+<CodeGroup>
+
+```bash npm
+npm install slick-carousel
+```
+
+```bash Bower
+bower install --save slick-carousel
+```
+
+```bash Yarn
+yarn add slick-carousel
+```
+
+</CodeGroup>
+
+After installing via npm, you'll need to import or require the files in your project:
+
+```javascript
+// Import Slick CSS
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+// Import Slick JS (assumes jQuery is already available)
+import 'slick-carousel/slick/slick.min.js';
+```
+
+## CDN Installation
+
+For quick prototyping or if you prefer not to use a build process, you can load Slick directly from a CDN.
+
+### jsDelivr CDN (Recommended)
+
+<Steps>
+  <Step title="Add CSS to your <head> section">
+    Include the Slick CSS files. The `slick.css` file is required, while `slick-theme.css` provides default styling for arrows and dots.
+
+    ```html
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
+    ```
+  </Step>
+
+  <Step title="Add jQuery before Slick">
+    Slick requires jQuery to function. Add jQuery before the Slick script:
+
+    ```html
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    ```
+  </Step>
+
+  <Step title="Add Slick JavaScript before closing </body> tag">
+    Include the Slick JavaScript file:
+
+    ```html
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+    ```
+  </Step>
+</Steps>
+
+### Complete CDN Setup
+
+Here's a complete HTML template with all CDN links in the correct order:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slick Carousel</title>
+    
+    <!-- Slick CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
+</head>
+<body>
+    <!-- Your content here -->
+    
+    <!-- jQuery (required) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Slick JavaScript -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+</body>
+</html>
+```
+
+### Alternative CDN: cdnjs
+
+You can also use cdnjs as an alternative:
+
+```html
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+
+<!-- JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+```
+
+<Note>
+  Visit [https://cdnjs.com/libraries/slick-carousel](https://cdnjs.com/libraries/slick-carousel) for additional CDN options and version information.
+</Note>
+
+## Direct Download
+
+You can download Slick Carousel directly from the GitHub repository:
+
+<Steps>
+  <Step title="Download from GitHub">
+    Visit [https://github.com/kenwheeler/slick/releases](https://github.com/kenwheeler/slick/releases) and download the latest release.
+  </Step>
+
+  <Step title="Extract the files">
+    Extract the downloaded archive to your project directory.
+  </Step>
+
+  <Step title="Include the required files">
+    Link to the CSS and JavaScript files in your HTML:
+
+    ```html
+    <link rel="stylesheet" type="text/css" href="path/to/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="path/to/slick/slick-theme.css"/>
+    
+    <script type="text/javascript" src="path/to/slick/slick.min.js"></script>
+    ```
+  </Step>
+</Steps>
+
+## Required Files
+
+At minimum, you need:
+
+- `slick.css` - Core carousel styles (required)
+- `slick.min.js` - Core carousel functionality (required)
+- jQuery 1.7+ (required)
+
+Optional but recommended:
+
+- `slick-theme.css` - Default styling for arrows, dots, and loading indicators
+- `fonts/` folder - Icon fonts used by the default theme (required if using slick-theme.css)
+
+## Verifying Installation
+
+To verify that Slick is installed correctly, open your browser's console and type:
+
+```javascript
+$.fn.slick
+```
+
+If Slick is loaded properly, you should see a function definition rather than `undefined`.
+
+## Next Steps
+
+Now that you have Slick installed, you're ready to create your first carousel!
+
+<Card title="Quick Start Guide" icon="rocket" href="/quickstart">
+  Follow our step-by-step guide to build your first Slick Carousel in minutes.
+</Card>

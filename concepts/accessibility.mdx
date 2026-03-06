@@ -1,0 +1,686 @@
+---
+title: Accessibility
+description: Make your Slick Carousel accessible to all users with keyboard navigation, ARIA attributes, screen reader support, and best practices for inclusive design.
+---
+
+## Overview
+
+Slick Carousel includes comprehensive accessibility features to ensure your carousel is usable by everyone, including users with disabilities who rely on keyboard navigation, screen readers, and other assistive technologies.
+
+## Accessibility Settings
+
+### Core Accessibility Option
+
+<ParamField path="accessibility" type="boolean" default="true">
+  Enables tabbing and arrow key navigation. Unless `autoplay: true`, sets browser focus to the current slide (or first of current slide set, if multiple `slidesToShow`) after slide change.
+  
+  <Warning>
+  For full a11y compliance, enable `focusOnChange` in addition to this setting.
+  </Warning>
+</ParamField>
+
+```javascript
+$('.slider').slick({
+  accessibility: true,  // Enable keyboard navigation
+  focusOnChange: true,  // Full a11y compliance
+  focusOnSelect: false
+});
+```
+
+### Focus Management
+
+<ParamField path="focusOnChange" type="boolean" default="false">
+  Puts focus on slide after change. Required for full accessibility compliance.
+</ParamField>
+
+<ParamField path="focusOnSelect" type="boolean" default="false">
+  Enable focus on selected element when clicked.
+</ParamField>
+
+```javascript
+$('.accessible-slider').slick({
+  accessibility: true,
+  focusOnChange: true,   // Focus management for keyboard users
+  focusOnSelect: true    // Focus on click
+});
+```
+
+## Keyboard Navigation
+
+When `accessibility: true` is enabled, Slick provides full keyboard support:
+
+### Arrow Keys
+
+<Info>
+Arrow keys are automatically mapped based on slider direction and RTL settings.
+</Info>
+
+**Horizontal Sliders (default):**
+- **Left Arrow** (←) - Navigate to previous slide
+- **Right Arrow** (→) - Navigate to next slide
+
+**RTL Sliders:**
+- **Left Arrow** (←) - Navigate to next slide (reversed)
+- **Right Arrow** (→) - Navigate to previous slide (reversed)
+
+**Vertical Sliders:**
+- **Up Arrow** (↑) - Navigate to previous slide
+- **Down Arrow** (↓) - Navigate to next slide
+
+### Implementation from Source
+
+From `slick.js:1523-1543`, here's how Slick handles keyboard input:
+
+```javascript
+Slick.prototype.keyHandler = function(event) {
+  var _ = this;
+  
+  // Don't slide if cursor is inside form fields
+  if(!event.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
+    
+    // Left arrow key
+    if (event.keyCode === 37 && _.options.accessibility === true) {
+      _.changeSlide({
+        data: {
+          message: _.options.rtl === true ? 'next' : 'previous'
+        }
+      });
+    } 
+    // Right arrow key
+    else if (event.keyCode === 39 && _.options.accessibility === true) {
+      _.changeSlide({
+        data: {
+          message: _.options.rtl === true ? 'previous' : 'next'
+        }
+      });
+    }
+  }
+};
+```
+
+<Note>
+Keyboard navigation is automatically disabled when the focus is inside form fields (INPUT, TEXTAREA, SELECT) to prevent conflicts.
+</Note>
+
+### Tab Navigation
+
+- **Tab** - Navigate to slider controls (arrows, dots)
+- **Shift + Tab** - Navigate backwards through controls
+- **Enter/Space** - Activate focused control
+
+## ARIA Support
+
+Slick automatically implements ARIA (Accessible Rich Internet Applications) attributes to enhance screen reader support.
+
+### ARIA Attributes on Slides
+
+From `slick.js:1330-1396`, Slick's `initADA()` function adds:
+
+```javascript
+// Hidden slides
+_.$slides.add(_.$slideTrack.find('.slick-cloned')).attr({
+  'aria-hidden': 'true',
+  'tabindex': '-1'
+});
+
+// Active slides
+_.$slideTrack.find('.slick-active').attr({
+  'aria-hidden': 'false',
+  'tabindex': '0'
+});
+```
+
+**Applied attributes:**
+- `aria-hidden="true"` - Hides inactive slides from screen readers
+- `aria-hidden="false"` - Makes active slides visible to screen readers
+- `tabindex="-1"` - Removes inactive slides from tab order
+- `tabindex="0"` - Adds active slides to natural tab order
+
+### ARIA Attributes on Navigation
+
+**Arrow Buttons:**
+```html
+<button class="slick-prev" aria-label="Previous" type="button">
+  Previous
+</button>
+<button class="slick-next" aria-label="Next" type="button">
+  Next
+</button>
+```
+
+**Disabled States:**
+```javascript
+// When arrows are disabled (e.g., first/last slide in non-infinite mode)
+_.$prevArrow
+  .addClass('slick-disabled')
+  .attr('aria-disabled', 'true');
+```
+
+### ARIA Attributes on Dots
+
+Slick creates a complete ARIA structure for dot navigation:
+
+```javascript
+// Dots container
+_.$dots.attr('role', 'tablist').find('li').each(function(i) {
+  $(this).attr({ 'role': 'presentation' });
+  
+  $(this).find('button').first().attr({
+    'role': 'tab',
+    'id': 'slick-slide-control' + _.instanceUid + i,
+    'aria-controls': 'slick-slide' + _.instanceUid + mappedSlideIndex,
+    'aria-label': (i + 1) + ' / ' + numDotGroups,
+    'aria-selected': null,
+    'tabindex': '-1'
+  });
+});
+
+// Active dot
+.eq(_.currentSlide).find('button').attr({
+  'aria-selected': 'true',
+  'tabindex': '0'
+});
+```
+
+**Structure created:**
+- `role="tablist"` - Identifies dot container as a tab list
+- `role="presentation"` - List items are presentational
+- `role="tab"` - Each button is a tab control
+- `aria-controls` - Links tab to its slide panel
+- `aria-label` - Provides "1 / 5" style labels
+- `aria-selected` - Indicates active tab
+
+### ARIA Attributes on Slide Panels
+
+```javascript
+$(this).attr({
+  'role': 'tabpanel',
+  'id': 'slick-slide' + _.instanceUid + i,
+  'tabindex': -1
+});
+
+if (slideControlIndex !== -1) {
+  var ariaButtonControl = 'slick-slide-control' + _.instanceUid + slideControlIndex;
+  if ($('#' + ariaButtonControl).length) {
+    $(this).attr({
+      'aria-describedby': ariaButtonControl
+    });
+  }
+}
+```
+
+## Screen Reader Announcements
+
+### Current Slide Announcement
+
+When using dot navigation with proper ARIA, screen readers announce:
+- "Slide 1 of 5, tab"
+- "Slide 2 of 5, tab"
+
+### Navigation Button Announcements
+
+With default arrow buttons:
+- "Previous, button" (or "Previous, button, disabled")
+- "Next, button" (or "Next, button, disabled")
+
+### Custom Accessible Labels
+
+Improve screen reader announcements with custom labels:
+
+```javascript
+$('.slider').slick({
+  accessibility: true,
+  prevArrow: '<button type="button" class="slick-prev" aria-label="Previous slide">Previous</button>',
+  nextArrow: '<button type="button" class="slick-next" aria-label="Next slide">Next</button>',
+  dots: true,
+  customPaging: function(slider, i) {
+    return '<button type="button" aria-label="Go to slide ' + (i + 1) + '">' + (i + 1) + '</button>';
+  }
+});
+```
+
+## Focus Management
+
+### Focus on Change
+
+From `slick.js:1735-1742`, after each slide change:
+
+```javascript
+if (_.options.accessibility === true) {
+  _.initADA();
+  
+  if (_.options.focusOnChange) {
+    var $currentSlide = $(_.$slides.get(_.currentSlide));
+    $currentSlide.attr('tabindex', 0).trigger('focus');
+  }
+}
+```
+
+This ensures keyboard users can continue navigating from the new slide.
+
+### Interactive Content in Slides
+
+For slides containing links, buttons, or form elements:
+
+```javascript
+// Slick automatically manages tabindex for interactive elements
+_.$slideTrack.find('.slick-active').find('a, input, button, select').attr({
+  'tabindex': '0'
+});
+
+// Non-active slides
+_.$slides.add(_.$slideTrack.find('.slick-cloned')).find('a, input, button, select').attr({
+  'tabindex': '-1'
+});
+```
+
+## Autoplay Accessibility
+
+### Pause on Focus
+
+<ParamField path="pauseOnFocus" type="boolean" default="true">
+  Pause autoplay when slider is focused. Critical for accessibility compliance.
+</ParamField>
+
+```javascript
+$('.slider').slick({
+  autoplay: true,
+  autoplaySpeed: 3000,
+  pauseOnFocus: true,  // Required for accessibility
+  pauseOnHover: true
+});
+```
+
+From `slick.js:1017-1052`, Slick's focus handler:
+
+```javascript
+Slick.prototype.focusHandler = function() {
+  var _ = this;
+  
+  _.$slider
+    .off('focus.slick blur.slick')
+    .on('focus.slick', '*', function(event) {
+      setTimeout(function() {
+        if(_.options.pauseOnFocus) {
+          _.focussed = true;
+          _.autoPlay();  // Re-evaluates and pauses if needed
+        }
+      }, 0);
+    })
+    .on('blur.slick', '*', function(event) {
+      if(_.options.pauseOnFocus) {
+        _.focussed = false;
+        _.autoPlay();  // Resumes if appropriate
+      }
+    });
+};
+```
+
+### Providing Pause Controls
+
+For full WCAG 2.1 compliance, provide user controls:
+
+```html
+<div class="slider-controls">
+  <button id="pause-slider" aria-label="Pause carousel">Pause</button>
+  <button id="play-slider" aria-label="Play carousel">Play</button>
+</div>
+
+<script>
+$('#pause-slider').on('click', function() {
+  $('.slider').slick('slickPause');
+  $(this).attr('aria-pressed', 'true');
+  $('#play-slider').attr('aria-pressed', 'false');
+});
+
+$('#play-slider').on('click', function() {
+  $('.slider').slick('slickPlay');
+  $(this).attr('aria-pressed', 'true');
+  $('#pause-slider').attr('aria-pressed', 'false');
+});
+</script>
+```
+
+## Accessible Configuration Examples
+
+### Fully Accessible Carousel
+
+```javascript
+$('.accessible-carousel').slick({
+  // Core accessibility
+  accessibility: true,
+  focusOnChange: true,
+  focusOnSelect: false,
+  
+  // Navigation
+  arrows: true,
+  dots: true,
+  prevArrow: '<button type="button" class="slick-prev" aria-label="Previous slide">←</button>',
+  nextArrow: '<button type="button" class="slick-next" aria-label="Next slide">→</button>',
+  
+  // Autoplay with pause capability
+  autoplay: true,
+  autoplaySpeed: 5000,
+  pauseOnFocus: true,
+  pauseOnHover: true,
+  pauseOnDotsHover: true,
+  
+  // Display
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  infinite: true,
+  
+  // Custom accessible paging
+  customPaging: function(slider, i) {
+    var slideTitle = $(slider.$slides[i]).data('title') || ('Slide ' + (i + 1));
+    return '<button type="button" aria-label="' + slideTitle + '">' + (i + 1) + '</button>';
+  }
+});
+```
+
+### Accessible Hero Slider
+
+```javascript
+$('.hero-slider').slick({
+  accessibility: true,
+  focusOnChange: true,
+  
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  fade: true,
+  arrows: true,
+  dots: true,
+  
+  autoplay: true,
+  autoplaySpeed: 7000,
+  pauseOnFocus: true,
+  pauseOnHover: true,
+  
+  prevArrow: '<button type="button" class="slick-prev" aria-label="Previous hero slide"><span aria-hidden="true">‹</span></button>',
+  nextArrow: '<button type="button" class="slick-next" aria-label="Next hero slide"><span aria-hidden="true">›</span></button>'
+});
+```
+
+### Product Gallery with Accessibility
+
+```javascript
+// Main slider
+$('.product-slider-for').slick({
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  arrows: true,
+  fade: true,
+  accessibility: true,
+  focusOnChange: true,
+  asNavFor: '.product-slider-nav',
+  
+  prevArrow: '<button type="button" class="slick-prev" aria-label="Previous product image">Previous</button>',
+  nextArrow: '<button type="button" class="slick-next" aria-label="Next product image">Next</button>'
+});
+
+// Thumbnail navigation
+$('.product-slider-nav').slick({
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  asNavFor: '.product-slider-for',
+  dots: false,
+  centerMode: true,
+  focusOnSelect: true,
+  accessibility: true,
+  
+  // Thumbnails should be accessible
+  prevArrow: '<button type="button" class="slick-prev" aria-label="Previous thumbnail">‹</button>',
+  nextArrow: '<button type="button" class="slick-next" aria-label="Next thumbnail">›</button>'
+});
+```
+
+## WCAG 2.1 Compliance
+
+### Success Criteria
+
+<Accordion title="2.1.1 Keyboard (Level A)">
+  **Requirement:** All functionality available through mouse must be available through keyboard.
+  
+  **Slick Implementation:**
+  - Arrow key navigation
+  - Tab access to controls
+  - Enter/Space to activate controls
+  
+  ```javascript
+  $('.slider').slick({
+    accessibility: true  // Enables full keyboard support
+  });
+  ```
+</Accordion>
+
+<Accordion title="2.2.2 Pause, Stop, Hide (Level A)">
+  **Requirement:** For moving, blinking, or auto-updating information, users must be able to pause, stop, or hide it.
+  
+  **Slick Implementation:**
+  ```javascript
+  $('.slider').slick({
+    autoplay: true,
+    pauseOnFocus: true,  // Auto-pauses
+    pauseOnHover: true   // User control
+  });
+  
+  // Provide explicit controls
+  $('.pause-button').on('click', function() {
+    $('.slider').slick('slickPause');
+  });
+  ```
+</Accordion>
+
+<Accordion title="2.4.3 Focus Order (Level A)">
+  **Requirement:** Focus order must be logical and intuitive.
+  
+  **Slick Implementation:**
+  - Natural tab order: Slides → Previous Arrow → Next Arrow → Dots
+  - `focusOnChange` maintains logical focus
+  
+  ```javascript
+  $('.slider').slick({
+    accessibility: true,
+    focusOnChange: true  // Maintains focus order
+  });
+  ```
+</Accordion>
+
+<Accordion title="2.4.7 Focus Visible (Level AA)">
+  **Requirement:** Keyboard focus indicator must be visible.
+  
+  **Implementation:** Add CSS focus styles:
+  ```css
+  .slick-arrow:focus,
+  .slick-dots button:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+  }
+  
+  .slick-slide:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: -2px;
+  }
+  ```
+</Accordion>
+
+<Accordion title="4.1.2 Name, Role, Value (Level A)">
+  **Requirement:** For all UI components, the name, role, and value can be programmatically determined.
+  
+  **Slick Implementation:**
+  - Proper ARIA roles (`tab`, `tabpanel`, `tablist`)
+  - ARIA labels on all controls
+  - `aria-selected`, `aria-controls`, `aria-describedby`
+  
+  Automatically handled when `accessibility: true`.
+</Accordion>
+
+## Best Practices
+
+<Card title="Always Enable Accessibility">
+  ```javascript
+  $('.slider').slick({
+    accessibility: true,  // Should always be true
+    focusOnChange: true   // For full compliance
+  });
+  ```
+  
+  Only disable if you're implementing custom keyboard navigation.
+</Card>
+
+<Card title="Provide Text Alternatives">
+  Ensure all images have appropriate alt text:
+  
+  ```html
+  <div class="slide">
+    <img src="product.jpg" alt="Blue cotton t-shirt, front view">
+  </div>
+  ```
+</Card>
+
+<Card title="Use Semantic HTML">
+  ```html
+  <!-- Good: Semantic structure -->
+  <section class="testimonials-slider" aria-label="Customer testimonials">
+    <div class="slide">
+      <blockquote>
+        <p>Great product!</p>
+        <cite>Jane Doe</cite>
+      </blockquote>
+    </div>
+  </section>
+  
+  <!-- Avoid: Non-semantic divs without context -->
+  <div class="slider">
+    <div>Great product! - Jane Doe</div>
+  </div>
+  ```
+</Card>
+
+<Card title="Test with Assistive Technology">
+  - Test with screen readers (NVDA, JAWS, VoiceOver)
+  - Navigate using only keyboard
+  - Use browser accessibility dev tools
+  - Test with voice control software
+</Card>
+
+<Card title="Provide Context for Slides">
+  ```html
+  <div class="slider" aria-label="Featured products carousel" role="region">
+    <div class="slide" data-title="Wireless Headphones">
+      <!-- Slide content -->
+    </div>
+  </div>
+  ```
+</Card>
+
+<Card title="Consider Animation Preferences">
+  Respect user preferences for reduced motion:
+  
+  ```javascript
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  
+  $('.slider').slick({
+    autoplay: !prefersReducedMotion,  // Disable autoplay
+    speed: prefersReducedMotion ? 0 : 500,  // Instant transitions
+    fade: true  // Fade is less motion-intensive
+  });
+  ```
+</Card>
+
+## Accessibility Checklist
+
+- [ ] `accessibility: true` enabled
+- [ ] `focusOnChange: true` for full compliance
+- [ ] `pauseOnFocus: true` for autoplay sliders
+- [ ] Custom arrow labels with `aria-label`
+- [ ] All images have descriptive `alt` text
+- [ ] Focus styles defined in CSS
+- [ ] Keyboard navigation tested
+- [ ] Screen reader tested
+- [ ] Color contrast meets WCAG AA (4.5:1 minimum)
+- [ ] Interactive elements have minimum 44x44px touch target
+- [ ] Semantic HTML structure
+- [ ] Meaningful heading hierarchy
+- [ ] Region labeled with `aria-label` or heading
+
+## Testing Accessibility
+
+### Keyboard Testing
+
+1. Navigate to the carousel using Tab
+2. Use arrow keys to navigate slides
+3. Tab to each control (arrows, dots)
+4. Activate controls with Enter or Space
+5. Verify focus is visible at all times
+6. Check that focus moves logically
+
+### Screen Reader Testing
+
+**With NVDA/JAWS (Windows):**
+1. Navigate to carousel region
+2. Verify region is announced
+3. Check slide content is read
+4. Navigate to controls
+5. Verify control labels are meaningful
+6. Check slide position is announced ("Slide 2 of 5")
+
+**With VoiceOver (macOS):**
+1. CMD+F5 to enable VoiceOver
+2. Navigate with VO+Arrow keys
+3. Interact with carousel: VO+Shift+Down
+4. Verify all content and controls are accessible
+
+### Automated Testing Tools
+
+- **axe DevTools** - Browser extension for accessibility auditing
+- **WAVE** - Web accessibility evaluation tool
+- **Lighthouse** - Chrome DevTools accessibility audit
+- **Pa11y** - Automated accessibility testing
+
+```bash
+# Example: Run Pa11y on your carousel page
+npx pa11y http://localhost:3000/carousel-page
+```
+
+## Common Accessibility Issues
+
+<Warning>
+**Issue:** Disabling `accessibility` without implementing alternative keyboard navigation
+
+**Solution:** Always keep `accessibility: true` unless you have a specific reason and alternative implementation.
+</Warning>
+
+<Warning>
+**Issue:** Using autoplay without pause controls
+
+**Solution:** Enable `pauseOnFocus` and `pauseOnHover`, and provide explicit pause/play buttons.
+</Warning>
+
+<Warning>
+**Issue:** Missing or poor aria-labels on navigation
+
+**Solution:** Provide descriptive labels:
+```javascript
+prevArrow: '<button aria-label="View previous testimonial">Prev</button>'
+```
+</Warning>
+
+<Warning>
+**Issue:** Invisible focus indicators
+
+**Solution:** Add clear focus styles:
+```css
+.slick-arrow:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+```
+</Warning>
+
+## Related Documentation
+
+- [Configuration](/concepts/configuration) - All accessibility-related settings
+- [Responsive Design](/concepts/responsive-design) - Accessible responsive patterns
+- [Methods](/api/methods) - Programmatic control for accessibility
+- [Events](/api/events) - Track user interactions

@@ -1,0 +1,716 @@
+---
+title: Events
+description: Complete reference for all Slick Carousel events and their usage
+---
+
+# Events
+
+In Slick 1.4+, callback methods were deprecated and replaced with events. Events allow you to hook into various stages of the slider lifecycle and respond to user interactions.
+
+## Basic Usage
+
+Events must be attached **before** initializing Slick:
+
+```javascript
+// Attach event listener
+$('.your-slider').on('afterChange', function(event, slick, currentSlide) {
+  console.log('Changed to slide:', currentSlide);
+});
+
+// Then initialize Slick
+$('.your-slider').slick({
+  dots: true,
+  infinite: true
+});
+```
+
+<Accordion title="Why attach events before initialization?">
+  Some events like `init` fire immediately when the slider is initialized. If you attach the event listener after calling `.slick()`, you'll miss these early events. It's best practice to always attach your event listeners before initialization.
+</Accordion>
+
+## Event Reference
+
+### afterChange
+
+```javascript
+$('.your-slider').on('afterChange', function(event, slick, currentSlide) {
+  // Your code here
+});
+```
+
+Fires after a slide change animation completes.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+<ParamField path="currentSlide" type="integer">
+  Zero-based index of the current slide
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Update slide counter
+$('.slider').on('afterChange', function(event, slick, currentSlide) {
+  var totalSlides = slick.slideCount;
+  $('#counter').text((currentSlide + 1) + ' / ' + totalSlides);
+});
+
+// Update URL hash
+$('.slider').on('afterChange', function(event, slick, currentSlide) {
+  window.location.hash = 'slide-' + currentSlide;
+});
+
+// Load content for current slide
+$('.slider').on('afterChange', function(event, slick, currentSlide) {
+  var $currentSlide = $(slick.$slides[currentSlide]);
+  var contentUrl = $currentSlide.data('content-url');
+  if (contentUrl) {
+    $.get(contentUrl, function(data) {
+      $currentSlide.find('.content').html(data);
+    });
+  }
+});
+
+// Track analytics
+$('.slider').on('afterChange', function(event, slick, currentSlide) {
+  ga('send', 'event', 'Slider', 'slide-change', 'Slide ' + currentSlide);
+});
+```
+
+---
+
+### beforeChange
+
+```javascript
+$('.your-slider').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+  // Your code here
+});
+```
+
+Fires before a slide change begins.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+<ParamField path="currentSlide" type="integer">
+  Zero-based index of the current slide (before change)
+</ParamField>
+
+<ParamField path="nextSlide" type="integer">
+  Zero-based index of the slide that will be shown next
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Pause video on slide change
+$('.slider').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+  var $currentSlide = $(slick.$slides[currentSlide]);
+  var video = $currentSlide.find('video')[0];
+  if (video) {
+    video.pause();
+  }
+});
+
+// Show loading state
+$('.slider').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+  $('#loading').fadeIn();
+});
+
+$('.slider').on('afterChange', function() {
+  $('#loading').fadeOut();
+});
+
+// Preload next slide content
+$('.slider').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+  var $nextSlide = $(slick.$slides[nextSlide]);
+  var imageUrl = $nextSlide.data('image');
+  if (imageUrl && !$nextSlide.find('img').length) {
+    $nextSlide.append('<img src="' + imageUrl + '">');
+  }
+});
+
+// Add/remove classes for animation
+$('.slider').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+  $(slick.$slides[currentSlide]).removeClass('active-slide');
+  $(slick.$slides[nextSlide]).addClass('active-slide');
+});
+```
+
+---
+
+### breakpoint
+
+```javascript
+$('.your-slider').on('breakpoint', function(event, slick, breakpoint) {
+  // Your code here
+});
+```
+
+Fires after a responsive breakpoint is hit.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+<ParamField path="breakpoint" type="integer">
+  The breakpoint value that was triggered
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Log breakpoint changes
+$('.slider').on('breakpoint', function(event, slick, breakpoint) {
+  console.log('Breakpoint triggered:', breakpoint);
+});
+
+// Adjust layout based on breakpoint
+$('.slider').on('breakpoint', function(event, slick, breakpoint) {
+  if (breakpoint <= 768) {
+    $('.slider-container').addClass('mobile-layout');
+  } else {
+    $('.slider-container').removeClass('mobile-layout');
+  }
+});
+
+// Load different content for mobile
+$('.slider').on('breakpoint', function(event, slick, breakpoint) {
+  if (breakpoint === 480) {
+    // Load mobile-optimized content
+    $('.slide').each(function() {
+      var mobileImage = $(this).data('mobile-image');
+      if (mobileImage) {
+        $(this).find('img').attr('src', mobileImage);
+      }
+    });
+  }
+});
+```
+
+---
+
+### destroy
+
+```javascript
+$('.your-slider').on('destroy', function(event, slick) {
+  // Your code here
+});
+```
+
+Fires when slider is destroyed or unslicked.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Clean up when slider is destroyed
+$('.slider').on('destroy', function(event, slick) {
+  console.log('Slider destroyed');
+  $(this).removeData();
+});
+
+// Remove custom event listeners
+$('.slider').on('destroy', function(event, slick) {
+  $(window).off('resize.customSlider');
+  $(document).off('keydown.customSlider');
+});
+
+// Reset to default state
+$('.slider').on('destroy', function(event, slick) {
+  $('.slider-controls').hide();
+  $('.slide-counter').text('');
+});
+```
+
+---
+
+### edge
+
+```javascript
+$('.your-slider').on('edge', function(event, slick, direction) {
+  // Your code here
+});
+```
+
+Fires when an edge is overscrolled in non-infinite mode.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+<ParamField path="direction" type="string">
+  Direction of the edge hit: `'left'` or `'right'`
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Show message at edges
+$('.slider').on('edge', function(event, slick, direction) {
+  if (direction === 'left') {
+    console.log('Reached first slide');
+  } else {
+    console.log('Reached last slide');
+  }
+});
+
+// Disable navigation buttons at edges
+$('.slider').on('edge', function(event, slick, direction) {
+  if (direction === 'left') {
+    $('#prev-btn').prop('disabled', true);
+  } else if (direction === 'right') {
+    $('#next-btn').prop('disabled', true);
+  }
+});
+
+// Show "Load More" button at end
+$('.slider').on('edge', function(event, slick, direction) {
+  if (direction === 'right') {
+    $('#load-more').fadeIn();
+  }
+});
+
+// Visual feedback
+$('.slider').on('edge', function(event, slick, direction) {
+  $('.slider-container').addClass('edge-reached');
+  setTimeout(function() {
+    $('.slider-container').removeClass('edge-reached');
+  }, 300);
+});
+```
+
+---
+
+### init
+
+```javascript
+$('.your-slider').on('init', function(event, slick) {
+  // Your code here
+});
+```
+
+Fires when Slick initializes for the first time. **Note:** This event must be defined before initializing the slider.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Must attach before initialization
+$('.slider').on('init', function(event, slick) {
+  console.log('Slider initialized');
+  console.log('Total slides:', slick.slideCount);
+});
+
+// Then initialize
+$('.slider').slick({
+  dots: true
+});
+
+// Show slider after init
+$('.slider').on('init', function(event, slick) {
+  $(this).fadeIn();
+});
+
+// Initialize custom controls
+$('.slider').on('init', function(event, slick) {
+  var total = slick.slideCount;
+  $('#total-slides').text(total);
+  $('#current-slide').text(1);
+  
+  // Set up custom navigation
+  for (var i = 0; i < total; i++) {
+    $('.custom-dots').append('<button data-slide="' + i + '">' + (i + 1) + '</button>');
+  }
+});
+
+// Start autoplay after user sees content
+$('.slider').on('init', function(event, slick) {
+  setTimeout(function() {
+    $('.slider').slick('slickPlay');
+  }, 2000);
+});
+```
+
+---
+
+### reInit
+
+```javascript
+$('.your-slider').on('reInit', function(event, slick) {
+  // Your code here
+});
+```
+
+Fires every time Slick (re-)initializes.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Refresh related UI elements
+$('.slider').on('reInit', function(event, slick) {
+  console.log('Slider re-initialized');
+  updateSlideCounter(slick);
+});
+
+// Recalculate dimensions
+$('.slider').on('reInit', function(event, slick) {
+  var sliderHeight = $(this).height();
+  $('.slider-overlay').height(sliderHeight);
+});
+
+// Re-apply custom modifications
+$('.slider').on('reInit', function(event, slick) {
+  // Custom slide numbering
+  slick.$slides.each(function(index) {
+    $(this).find('.slide-number').text(index + 1);
+  });
+});
+```
+
+---
+
+### setPosition
+
+```javascript
+$('.your-slider').on('setPosition', function(event, slick) {
+  // Your code here
+});
+```
+
+Fires every time Slick recalculates position.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Adjust custom elements on position change
+$('.slider').on('setPosition', function(event, slick) {
+  var slideWidth = slick.$slides.first().width();
+  $('.custom-indicator').width(slideWidth);
+});
+
+// Log position changes
+$('.slider').on('setPosition', function(event, slick) {
+  console.log('Position recalculated');
+});
+```
+
+---
+
+### swipe
+
+```javascript
+$('.your-slider').on('swipe', function(event, slick, direction) {
+  // Your code here
+});
+```
+
+Fires after swipe or drag action completes.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+<ParamField path="direction" type="string">
+  Direction of the swipe: `'left'` or `'right'`
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Track swipe direction
+$('.slider').on('swipe', function(event, slick, direction) {
+  console.log('Swiped:', direction);
+});
+
+// Visual feedback for swipe
+$('.slider').on('swipe', function(event, slick, direction) {
+  if (direction === 'left') {
+    $('.swipe-indicator').addClass('swipe-left');
+  } else {
+    $('.swipe-indicator').addClass('swipe-right');
+  }
+  
+  setTimeout(function() {
+    $('.swipe-indicator').removeClass('swipe-left swipe-right');
+  }, 300);
+});
+
+// Track swipe analytics
+$('.slider').on('swipe', function(event, slick, direction) {
+  ga('send', 'event', 'Slider', 'swipe', direction);
+});
+
+// Show tutorial on first swipe
+var firstSwipe = true;
+$('.slider').on('swipe', function(event, slick, direction) {
+  if (firstSwipe) {
+    $('#tutorial').fadeOut();
+    firstSwipe = false;
+  }
+});
+```
+
+---
+
+### lazyLoaded
+
+```javascript
+$('.your-slider').on('lazyLoaded', function(event, slick, image, imageSource) {
+  // Your code here
+});
+```
+
+Fires after an image loads lazily.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+<ParamField path="image" type="jQuery object">
+  The image element that was loaded
+</ParamField>
+
+<ParamField path="imageSource" type="string">
+  URL of the loaded image
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Log when images load
+$('.slider').on('lazyLoaded', function(event, slick, image, imageSource) {
+  console.log('Image loaded:', imageSource);
+});
+
+// Add loaded class for animation
+$('.slider').on('lazyLoaded', function(event, slick, image, imageSource) {
+  $(image).addClass('fade-in-loaded');
+});
+
+// Track loading progress
+var totalImages = $('.slider img[data-lazy]').length;
+var loadedImages = 0;
+
+$('.slider').on('lazyLoaded', function(event, slick, image, imageSource) {
+  loadedImages++;
+  var progress = (loadedImages / totalImages) * 100;
+  $('#loading-progress').css('width', progress + '%');
+});
+
+// Show image caption after load
+$('.slider').on('lazyLoaded', function(event, slick, image, imageSource) {
+  var caption = $(image).data('caption');
+  if (caption) {
+    $(image).after('<div class="caption">' + caption + '</div>');
+  }
+});
+```
+
+---
+
+### lazyLoadError
+
+```javascript
+$('.your-slider').on('lazyLoadError', function(event, slick, image, imageSource) {
+  // Your code here
+});
+```
+
+Fires after an image fails to load.
+
+**Parameters:**
+
+<ParamField path="event" type="object">
+  jQuery event object
+</ParamField>
+
+<ParamField path="slick" type="object">
+  Slick instance
+</ParamField>
+
+<ParamField path="image" type="jQuery object">
+  The image element that failed to load
+</ParamField>
+
+<ParamField path="imageSource" type="string">
+  URL of the image that failed
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Load fallback image on error
+$('.slider').on('lazyLoadError', function(event, slick, image, imageSource) {
+  console.error('Failed to load:', imageSource);
+  $(image).attr('src', '/images/placeholder.jpg');
+});
+
+// Show error message
+$('.slider').on('lazyLoadError', function(event, slick, image, imageSource) {
+  $(image).replaceWith('<div class="image-error">Image failed to load</div>');
+});
+
+// Track errors
+$('.slider').on('lazyLoadError', function(event, slick, image, imageSource) {
+  ga('send', 'event', 'Slider', 'image-error', imageSource);
+});
+
+// Retry loading
+$('.slider').on('lazyLoadError', function(event, slick, image, imageSource) {
+  var retries = $(image).data('retries') || 0;
+  if (retries < 3) {
+    setTimeout(function() {
+      $(image).data('retries', retries + 1);
+      $(image).attr('data-lazy', imageSource).addClass('slick-loading');
+    }, 2000);
+  }
+});
+```
+
+---
+
+## Complete Example
+
+```javascript
+// Attach all event listeners first
+$('.product-slider')
+  .on('init', function(event, slick) {
+    console.log('Slider initialized with ' + slick.slideCount + ' slides');
+    $('#total').text(slick.slideCount);
+  })
+  .on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+    // Pause video on current slide
+    var $current = $(slick.$slides[currentSlide]);
+    $current.find('video').each(function() {
+      this.pause();
+    });
+  })
+  .on('afterChange', function(event, slick, currentSlide) {
+    // Update counter
+    $('#current').text(currentSlide + 1);
+    
+    // Play video on new slide if exists
+    var $current = $(slick.$slides[currentSlide]);
+    $current.find('video').each(function() {
+      this.play();
+    });
+  })
+  .on('swipe', function(event, slick, direction) {
+    console.log('Swiped ' + direction);
+  })
+  .on('edge', function(event, slick, direction) {
+    console.log('Edge hit: ' + direction);
+  })
+  .on('breakpoint', function(event, slick, breakpoint) {
+    console.log('Breakpoint: ' + breakpoint);
+  })
+  .on('lazyLoaded', function(event, slick, image, imageSource) {
+    console.log('Loaded: ' + imageSource);
+  })
+  .on('lazyLoadError', function(event, slick, image, imageSource) {
+    console.error('Failed: ' + imageSource);
+    $(image).attr('src', '/images/placeholder.jpg');
+  });
+
+// Now initialize the slider
+$('.product-slider').slick({
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  lazyLoad: 'ondemand',
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 2
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 1
+      }
+    }
+  ]
+});
+```

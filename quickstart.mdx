@@ -1,80 +1,436 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quick Start
+description: Build your first Slick Carousel in minutes with this step-by-step guide
 ---
 
-## Get started in three steps
+## Your First Slick Carousel
 
-Get your documentation site running locally and make your first customization.
+This guide will walk you through creating a fully functional Slick Carousel from scratch. By the end, you'll have a responsive, touch-enabled carousel with navigation.
 
-### Step 1: Set up your local environment
+<Steps>
+  <Step title="Set up your HTML file">
+    Create a new HTML file with the basic structure and include the required dependencies from a CDN:
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My First Slick Carousel</title>
+        
+        <!-- Slick CSS -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
+        
+        <!-- Basic styling -->
+        <style>
+            .slider {
+                width: 80%;
+                margin: 50px auto;
+            }
+            .slide {
+                background: #3498db;
+                color: white;
+                padding: 100px 0;
+                text-align: center;
+                font-size: 24px;
+                font-family: Arial, sans-serif;
+            }
+            .slide:nth-child(2) { background: #e74c3c; }
+            .slide:nth-child(3) { background: #2ecc71; }
+            .slide:nth-child(4) { background: #f39c12; }
+        </style>
+    </head>
+    <body>
+        <!-- Carousel markup goes here -->
+        
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+    </body>
+    </html>
+    ```
+  </Step>
+
+  <Step title="Add the carousel HTML markup">
+    Create a container element with child elements for each slide:
+
+    ```html
+    <body>
+        <div class="slider">
+            <div class="slide">Slide 1</div>
+            <div class="slide">Slide 2</div>
+            <div class="slide">Slide 3</div>
+            <div class="slide">Slide 4</div>
+        </div>
+        
+        <!-- Scripts below -->
+    </body>
+    ```
+
+    <Note>
+      You can use any HTML structure inside each slide - images, text, videos, or complex layouts.
+    </Note>
+  </Step>
+
+  <Step title="Initialize Slick with JavaScript">
+    Add a script tag to initialize the carousel after the page loads:
+
+    ```html
+    <script>
+        $(document).ready(function(){
+            $('.slider').slick();
+        });
+    </script>
+    ```
+
+    That's it! Your basic carousel is now working with default settings.
+  </Step>
+
+  <Step title="Customize with options (optional)">
+    Enhance your carousel with configuration options:
+
+    ```html
+    <script>
+        $(document).ready(function(){
+            $('.slider').slick({
+                dots: true,              // Show dot indicators
+                infinite: true,          // Infinite looping
+                speed: 500,              // Transition speed in ms
+                slidesToShow: 1,         // Number of slides visible
+                slidesToScroll: 1,       // Number of slides to scroll
+                autoplay: true,          // Enable autoplay
+                autoplaySpeed: 3000,     // Autoplay interval in ms
+                arrows: true,            // Show prev/next arrows
+                fade: false              // Use fade transition
+            });
+        });
+    </script>
+    ```
+  </Step>
+</Steps>
+
+## Complete Working Example
+
+Here's a complete HTML file you can copy and run immediately:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Slick Carousel</title>
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+    <!-- Slick CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .slider {
+            width: 80%;
+            margin: 50px auto;
+        }
+        .slide {
+            background: #3498db;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            font-size: 24px;
+        }
+        .slide:nth-child(2) { background: #e74c3c; }
+        .slide:nth-child(3) { background: #2ecc71; }
+        .slide:nth-child(4) { background: #f39c12; }
+        .slide:nth-child(5) { background: #9b59b6; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">My First Slick Carousel</h1>
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    <div class="slider">
+        <div class="slide">Slide 1</div>
+        <div class="slide">Slide 2</div>
+        <div class="slide">Slide 3</div>
+        <div class="slide">Slide 4</div>
+        <div class="slide">Slide 5</div>
+    </div>
+    
+    <!-- jQuery (required) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Slick JavaScript -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+    
+    <!-- Initialize Slick -->
+    <script>
+        $(document).ready(function(){
+            $('.slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 3000
+            });
+        });
+    </script>
+</body>
+</html>
+```
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+## Using Data Attributes
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+Starting from version 1.5, you can configure Slick using data attributes directly in your HTML:
 
-### Step 3: Go live
+```html
+<div class="slider" data-slick='{"slidesToShow": 3, "slidesToScroll": 1, "dots": true}'>
+    <div class="slide">Slide 1</div>
+    <div class="slide">Slide 2</div>
+    <div class="slide">Slide 3</div>
+    <div class="slide">Slide 4</div>
+    <div class="slide">Slide 5</div>
+</div>
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
-
-## Next steps
-
-Now that you have your docs running, explore these key features:
-
-<CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
-</CardGroup>
+<script>
+    $(document).ready(function(){
+        $('.slider').slick();
+    });
+</script>
+```
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  You still need to call `$('.slider').slick()` to initialize the carousel, even when using data attributes.
 </Note>
+
+## Image Carousel Example
+
+Here's a practical example with images:
+
+```html
+<div class="image-slider">
+    <div><img src="image1.jpg" alt="Image 1"></div>
+    <div><img src="image2.jpg" alt="Image 2"></div>
+    <div><img src="image3.jpg" alt="Image 3"></div>
+    <div><img src="image4.jpg" alt="Image 4"></div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('.image-slider').slick({
+            dots: true,
+            infinite: true,
+            speed: 500,
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
+    });
+</script>
+
+<style>
+    .image-slider img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+</style>
+```
+
+## Responsive Carousel Example
+
+Create a carousel that adapts to different screen sizes:
+
+```javascript
+$('.responsive-slider').slick({
+    dots: true,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                infinite: true,
+                dots: true
+            }
+        },
+        {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1
+            }
+        },
+        {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false
+            }
+        }
+    ]
+});
+```
+
+## Common Configuration Options
+
+Here are the most commonly used options to get you started:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `dots` | boolean | `false` | Show dot indicators |
+| `arrows` | boolean | `true` | Show prev/next arrows |
+| `infinite` | boolean | `true` | Infinite loop sliding |
+| `speed` | int | `300` | Slide transition speed in milliseconds |
+| `slidesToShow` | int | `1` | Number of slides to show |
+| `slidesToScroll` | int | `1` | Number of slides to scroll |
+| `autoplay` | boolean | `false` | Enable autoplay |
+| `autoplaySpeed` | int | `3000` | Autoplay speed in milliseconds |
+| `fade` | boolean | `false` | Enable fade transition |
+| `centerMode` | boolean | `false` | Center current slide |
+| `responsive` | array | `null` | Breakpoint-specific settings |
+
+## Working with Events
+
+Slick provides events you can listen to for custom functionality:
+
+```javascript
+// Initialize the slider
+$('.slider').slick({
+    dots: true,
+    speed: 500
+});
+
+// Listen for slide change
+$('.slider').on('afterChange', function(event, slick, currentSlide){
+    console.log('Current slide:', currentSlide);
+});
+
+// Listen for before slide change
+$('.slider').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+    console.log('Moving from slide', currentSlide, 'to slide', nextSlide);
+});
+
+// Listen for initialization
+$('.slider').on('init', function(event, slick){
+    console.log('Slider initialized!');
+});
+```
+
+## Controlling Your Carousel
+
+You can control the carousel programmatically using methods:
+
+```javascript
+// Go to next slide
+$('.slider').slick('slickNext');
+
+// Go to previous slide
+$('.slider').slick('slickPrev');
+
+// Go to specific slide (index starts at 0)
+$('.slider').slick('slickGoTo', 2);
+
+// Pause autoplay
+$('.slider').slick('slickPause');
+
+// Start autoplay
+$('.slider').slick('slickPlay');
+
+// Get current slide index
+var currentSlide = $('.slider').slick('slickCurrentSlide');
+console.log('Current slide:', currentSlide);
+
+// Destroy the carousel
+$('.slider').slick('unslick');
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Carousel not showing or slides stacking vertically">
+    Make sure jQuery is loaded before Slick, and that you're calling `.slick()` after the DOM is ready:
+    
+    ```javascript
+    $(document).ready(function(){
+        $('.slider').slick();
+    });
+    ```
+  </Accordion>
+
+  <Accordion title="Images not displaying correctly">
+    Add this CSS to ensure images display properly:
+    
+    ```css
+    .slick-slide img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Arrows or dots not showing">
+    Make sure you've included `slick-theme.css` and the fonts folder is accessible:
+    
+    ```html
+    <link rel="stylesheet" type="text/css" href="path/to/slick-theme.css"/>
+    ```
+  </Accordion>
+
+  <Accordion title="Console error: '$.fn.slick is not a function'">
+    This means Slick isn't loaded properly. Check that:
+    - jQuery is loaded before Slick
+    - The Slick JavaScript file path is correct
+    - There are no JavaScript errors preventing Slick from loading
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+Congratulations! You've created your first Slick Carousel. Here are some next steps:
+
+<CardGroup cols={2}>
+  <Card title="Configuration Options" icon="sliders" href="/concepts/configuration">
+    Explore all available configuration options to customize your carousel.
+  </Card>
+  
+  <Card title="Methods & Events" icon="code" href="/api/methods">
+    Learn about methods for controlling your carousel and events for custom functionality.
+  </Card>
+  
+  <Card title="Examples" icon="images" href="/guides/examples">
+    Browse real-world examples and advanced use cases.
+  </Card>
+  
+  <Card title="Styling Guide" icon="paintbrush" href="/guides/theming">
+    Learn how to customize the appearance of your carousel.
+  </Card>
+</CardGroup>

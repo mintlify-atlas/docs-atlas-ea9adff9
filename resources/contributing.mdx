@@ -1,0 +1,466 @@
+---
+title: Contributing
+description: Guidelines for contributing to Slick Carousel
+---
+
+## Welcome Contributors
+
+Contributions to Slick Carousel are welcome! Whether you're fixing bugs, adding features, or improving documentation, your help is appreciated.
+
+<Info>
+  Please review these guidelines before submitting pull requests or filing issues.
+</Info>
+
+## Submitting Issues
+
+### Bug Reports
+
+<Warning>
+  **All bug reports and problem issues require a jsFiddle test case.**
+</Warning>
+
+Before submitting a bug report:
+
+<Steps>
+  <Step title="Create a test case">
+    Fork this JSFiddle as a baseline: [https://jsfiddle.net/o1yehw0g/1/](https://jsfiddle.net/o1yehw0g/1/)
+
+    Your test case must:
+    - Clearly demonstrate the bug or issue
+    - Contain the bare minimum HTML, CSS, and JavaScript required
+    - Use non-minified assets (we cannot debug `.min.js` files)
+    - Be a reduced test case, not a link to your production site
+  </Step>
+
+  <Step title="Provide clear reproduction steps">
+    In your issue, include:
+    
+    ```markdown
+    ## Steps to reproduce
+    1. Initialize slider with specific options
+    2. Click the next arrow
+    3. Observe incorrect behavior
+
+    ## Expected behavior
+    Slider should advance to next slide
+
+    ## Observed behavior  
+    Slider jumps to wrong slide
+
+    ## Environment
+    - Browser: Chrome 120
+    - jQuery version: 3.6.0
+    - Slick version: 1.8.1
+    ```
+  </Step>
+
+  <Step title="Submit with test case link">
+    Include your jsFiddle link prominently in the issue.
+
+    <Warning>
+      Issues without a test case may be closed without response.
+    </Warning>
+  </Step>
+</Steps>
+
+### Issue Template
+
+When creating an issue, use this format:
+
+```markdown
+> Short description of the bug/issue
+
+====================================================================
+
+###### [paste your jsfiddle link here]
+
+Use this jsfiddle to reproduce your bug:
+http://jsfiddle.net/simeydotme/fmo50w7n/
+We will likely close your issue without it.
+
+====================================================================
+
+#### Steps to reproduce the problem
+
+1. ...
+2. ...
+
+====================================================================
+
+#### What is the expected behaviour?
+
+...
+
+====================================================================
+
+#### What is observed behaviour?
+
+...
+
+====================================================================
+
+#### More Details
+
+- Which browsers/versions does it happen on?
+- Which jQuery/Slick version are you using?
+- Did this work before?
+```
+
+## Getting Support
+
+<Note>
+  **GitHub Issues is not for support questions.** Use these resources instead:
+</Note>
+
+<AccordionGroup>
+  <Accordion title="Where to Ask Questions">
+    If you're having problems getting Slick to work or can't figure something out:
+
+    1. **Stack Overflow**: [stackoverflow.com/questions/tagged/slick](https://stackoverflow.com/search?q=slick+carousel)
+       - Search existing questions
+       - Ask new questions with the `slick` tag
+    
+    2. **Gitter Chat**: [gitter.im/kenwheeler/slick](https://gitter.im/kenwheeler/slick)
+       - Real-time community discussion
+       - Share code and get quick feedback
+    
+    3. **Troubleshooting Guide**: [View common issues](/resources/troubleshooting)
+       - Check solutions to frequent problems
+
+    <Warning>
+      Support questions posted to GitHub Issues will be redirected to these forums.
+    </Warning>
+  </Accordion>
+</AccordionGroup>
+
+## Feature Requests
+
+If you would like to request or propose a feature:
+
+<CardGroup cols={2}>
+  <Card title="Reddit" icon="reddit" href="http://www.reddit.com/r/slickcarousel/">
+    Discuss features on r/slickcarousel
+  </Card>
+  <Card title="Gitter" icon="comments" href="https://gitter.im/kenwheeler/slick">
+    Chat with the community
+  </Card>
+</CardGroup>
+
+<Info>
+  Feature requests are welcome, but please discuss them in the community forums before opening a GitHub issue.
+</Info>
+
+## Pull Requests
+
+<Note>
+  **Contributions are welcome!** Please be prepared to edit your pull request based on feedback.
+</Note>
+
+### Before Submitting a Pull Request
+
+<Steps>
+  <Step title="Discuss major changes">
+    For significant features or changes:
+    - Open an issue first to discuss your proposal
+    - Get feedback from maintainers
+    - Ensure the feature aligns with project goals
+  </Step>
+
+  <Step title="Create a working test case">
+    Provide a jsFiddle demonstrating your change working with:
+    - Every mode that Slick supports
+    - Varying numbers of slides
+    - Different `slidesToShow` and `slidesToScroll` values
+    - Responsive breakpoints
+    
+    <Warning>
+      Pull requests without comprehensive test cases will be closed.
+    </Warning>
+  </Step>
+
+  <Step title="Follow code style">
+    - Match existing code style and formatting
+    - Use meaningful variable and function names
+    - Add comments for complex logic
+    - Keep changes focused and minimal
+  </Step>
+
+  <Step title="Test thoroughly">
+    Verify your changes work across:
+    - All major browsers (Chrome, Firefox, Safari, Edge)
+    - IE8+ if applicable
+    - Mobile browsers (iOS Safari, Chrome for Android)
+    - Various screen sizes
+  </Step>
+</Steps>
+
+### Pull Request Requirements
+
+<AccordionGroup>
+  <Accordion title="Code Requirements">
+    Your pull request must:
+
+    - [ ] Include a clear description of what it changes
+    - [ ] Reference related issues (e.g., "Fixes #123")
+    - [ ] Include a jsFiddle demonstrating the fix/feature
+    - [ ] Work with all Slick modes and configurations
+    - [ ] Not break existing functionality
+    - [ ] Follow existing code style
+    - [ ] Include comments for complex changes
+  </Accordion>
+
+  <Accordion title="Testing Requirements">
+    You must test your changes with:
+
+    ```javascript
+    // Test with different configurations
+    $('.slider').slick({
+      infinite: true,
+      infinite: false,
+      centerMode: true,
+      variableWidth: true,
+      vertical: true,
+      fade: true,
+      // etc.
+    });
+
+    // Test with responsive breakpoints
+    $('.slider').slick({
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: { /* ... */ }
+        }
+      ]
+    });
+
+    // Test with varying slide counts
+    // - 1 slide
+    // - 3 slides
+    // - 10+ slides
+    ```
+  </Accordion>
+
+  <Accordion title="Documentation Requirements">
+    If your PR adds new features:
+
+    - Update README.markdown with new options
+    - Document new methods or events
+    - Provide usage examples
+    - Update relevant documentation pages
+  </Accordion>
+</AccordionGroup>
+
+### Pull Request Process
+
+<Steps>
+  <Step title="Fork the repository">
+    ```bash
+    git clone https://github.com/your-username/slick.git
+    cd slick
+    ```
+  </Step>
+
+  <Step title="Create a feature branch">
+    ```bash
+    git checkout -b feature/my-improvement
+    ```
+  </Step>
+
+  <Step title="Make your changes">
+    - Edit source files in `/slick/`
+    - Test your changes thoroughly
+    - Create a jsFiddle demo
+  </Step>
+
+  <Step title="Commit your changes">
+    ```bash
+    git add .
+    git commit -m "Fix: Description of what this fixes"
+    ```
+
+    Use clear commit messages:
+    - `Fix: Corrects edge case with infinite scroll`
+    - `Feature: Add new pauseOnDotsHover option`
+    - `Docs: Update browser support information`
+  </Step>
+
+  <Step title="Push and create PR">
+    ```bash
+    git push origin feature/my-improvement
+    ```
+
+    Then open a pull request on GitHub with:
+    - Clear title and description
+    - Link to your jsFiddle demo
+    - Reference to related issues
+    - Browser testing results
+  </Step>
+
+  <Step title="Respond to feedback">
+    Be prepared to:
+    - Answer questions about your implementation
+    - Make requested changes
+    - Update your test case
+    - Rebase if needed
+  </Step>
+</Steps>
+
+## Development Setup
+
+### Building from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/kenwheeler/slick.git
+cd slick
+
+# Install dependencies
+npm install
+
+# Build (if applicable)
+npm run build
+```
+
+### Project Structure
+
+```
+slick/
+├── slick/
+│   ├── slick.js          # Main source file
+│   ├── slick.min.js      # Minified version
+│   ├── slick.css         # Core styles
+│   ├── slick-theme.css   # Theme styles
+│   └── fonts/            # Icon fonts
+├── README.markdown       # Documentation
+├── CONTRIBUTING.markdown # This file
+└── ISSUE_TEMPLATE.md    # Issue template
+```
+
+### Coding Standards
+
+<AccordionGroup>
+  <Accordion title="JavaScript Style">
+    - Use semicolons
+    - 4-space indentation
+    - Single quotes for strings
+    - Meaningful variable names
+    - Comment complex logic
+
+    ```javascript
+    // Good
+    var slideCount = _.slideCount;
+    
+    // Bad
+    var sc = _.slideCount;
+    ```
+  </Accordion>
+
+  <Accordion title="CSS Style">
+    - Use existing class naming conventions
+    - Prefix all Slick classes with `.slick-`
+    - Keep specificity low
+    - Comment unusual CSS
+
+    ```css
+    /* Good */
+    .slick-slide {
+        display: none;
+    }
+
+    /* Bad */
+    div.slider .slide {
+        display: none;
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Code of Conduct
+
+### Our Standards
+
+- Be respectful and professional
+- Welcome newcomers and help them learn
+- Accept constructive criticism gracefully
+- Focus on what's best for the project
+- Show empathy towards other community members
+
+### Unacceptable Behavior
+
+- Harassment or discriminatory comments
+- Trolling or insulting remarks
+- Personal or political attacks
+- Publishing others' private information
+- Any conduct inappropriate in a professional setting
+
+## Ownership and Rights
+
+<Warning>
+  By submitting a pull request, you authorize the project maintainer to edit or modify it in any way.
+</Warning>
+
+<Info>
+  You will be listed in GitHub as a contributor, but the project maintainer retains final decision-making authority on the project's direction.
+</Info>
+
+From the project creator:
+
+> While Slick is open source, this is still my baby, and by submitting a pull request you are authorizing me to edit or modify it in any way shape or form. You will be listed in GitHub as a contributor, but I have and will continue to steer the direction of this project.
+
+## Recognition
+
+Contributors are recognized through:
+- GitHub's contributor list
+- Mention in release notes (for significant contributions)
+- Community acknowledgment
+
+## License
+
+Slick Carousel is licensed under the MIT License.
+
+```
+Copyright (c) 2017 Ken Wheeler
+
+Licensed under the MIT license.
+
+Free as in Bacon.
+```
+
+By contributing, you agree that your contributions will be licensed under the same MIT License.
+
+## Questions?
+
+If you have questions about contributing:
+
+<CardGroup cols={2}>
+  <Card title="Gitter Chat" icon="comments" href="https://gitter.im/kenwheeler/slick">
+    Ask the community
+  </Card>
+  <Card title="Stack Overflow" icon="stack-overflow" href="https://stackoverflow.com/questions/tagged/slick">
+    Search or ask questions
+  </Card>
+</CardGroup>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Troubleshooting" icon="wrench" href="/resources/troubleshooting">
+    Common issues and solutions
+  </Card>
+  <Card title="Browser Support" icon="browser" href="/resources/browser-support">
+    Compatibility information
+  </Card>
+  <Card title="Migration Guide" icon="arrow-right" href="/resources/migration">
+    Upgrading between versions
+  </Card>
+  <Card title="GitHub Repository" icon="github" href="https://github.com/kenwheeler/slick">
+    View source code
+  </Card>
+</CardGroup>
+
+---
+
+<Info>
+  Thank you for contributing to Slick Carousel! Your efforts help make it better for everyone.
+</Info>

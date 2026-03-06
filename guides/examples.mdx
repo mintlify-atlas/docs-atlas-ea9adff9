@@ -1,0 +1,561 @@
+---
+title: Complete Examples
+description: Working examples demonstrating different Slick Carousel configurations and use cases
+---
+
+## Example 1: Responsive Product Carousel
+
+A fully responsive product carousel that adapts to different screen sizes.
+
+<CodeGroup>
+```html HTML
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Carousel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
+  <style>
+    .slider {
+      width: 80%;
+      margin: 50px auto;
+    }
+    .slick-slide {
+      margin: 0 10px;
+    }
+    .slick-slide img {
+      width: 100%;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slider product-slider">
+    <div><img src="https://placehold.co/350x300?text=Product+1"></div>
+    <div><img src="https://placehold.co/350x300?text=Product+2"></div>
+    <div><img src="https://placehold.co/350x300?text=Product+3"></div>
+    <div><img src="https://placehold.co/350x300?text=Product+4"></div>
+    <div><img src="https://placehold.co/350x300?text=Product+5"></div>
+    <div><img src="https://placehold.co/350x300?text=Product+6"></div>
+    <div><img src="https://placehold.co/350x300?text=Product+7"></div>
+    <div><img src="https://placehold.co/350x300?text=Product+8"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+</body>
+</html>
+```
+
+```javascript JavaScript
+$(document).ready(function(){
+  $('.product-slider').slick({
+    infinite: false,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    dots: true,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  });
+});
+```
+</CodeGroup>
+
+<Note>
+This example shows 4 products on desktop, 3 on tablets, 2 on large phones, and 1 on small phones.
+</Note>
+
+## Example 2: Hero Slider with Fade
+
+A full-width hero slider with fade transitions and autoplay.
+
+<CodeGroup>
+```html HTML
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
+  <style>
+    body { margin: 0; }
+    .hero-slider { width: 100%; }
+    .hero-slide {
+      position: relative;
+      height: 600px;
+      background-size: cover;
+      background-position: center;
+    }
+    .hero-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .hero-content h1 { font-size: 48px; margin: 0; }
+    .hero-content p { font-size: 24px; }
+  </style>
+</head>
+<body>
+  <div class="hero-slider">
+    <div class="hero-slide" style="background-image: url('https://placehold.co/1920x600?text=Welcome')">
+      <div class="hero-content">
+        <h1>Welcome to Our Store</h1>
+        <p>Discover amazing products</p>
+      </div>
+    </div>
+    <div class="hero-slide" style="background-image: url('https://placehold.co/1920x600?text=Quality')">
+      <div class="hero-content">
+        <h1>Quality Products</h1>
+        <p>Built to last</p>
+      </div>
+    </div>
+    <div class="hero-slide" style="background-image: url('https://placehold.co/1920x600?text=Service')">
+      <div class="hero-content">
+        <h1>Exceptional Service</h1>
+        <p>We're here to help</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+</body>
+</html>
+```
+
+```javascript JavaScript
+$(document).ready(function(){
+  $('.hero-slider').slick({
+    dots: true,
+    infinite: true,
+    speed: 1000,
+    fade: true,
+    cssEase: 'linear',
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    arrows: false
+  });
+});
+```
+</CodeGroup>
+
+<Info>
+Fade transitions work best with `slidesToShow: 1` and create a smooth, elegant effect.
+</Info>
+
+## Example 3: Center Mode Gallery
+
+A center-focused gallery that shows partial views of adjacent slides.
+
+<CodeGroup>
+```html HTML
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 50px 0;
+      background: #f5f5f5;
+    }
+    .center-slider {
+      width: 90%;
+      margin: 0 auto;
+    }
+    .slick-slide {
+      transition: all ease-in-out .3s;
+      opacity: 0.5;
+      transform: scale(0.9);
+    }
+    .slick-slide img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .slick-center {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+  <div class="center-slider">
+    <div><img src="https://placehold.co/400x300?text=Slide+1"></div>
+    <div><img src="https://placehold.co/400x300?text=Slide+2"></div>
+    <div><img src="https://placehold.co/400x300?text=Slide+3"></div>
+    <div><img src="https://placehold.co/400x300?text=Slide+4"></div>
+    <div><img src="https://placehold.co/400x300?text=Slide+5"></div>
+    <div><img src="https://placehold.co/400x300?text=Slide+6"></div>
+    <div><img src="https://placehold.co/400x300?text=Slide+7"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+</body>
+</html>
+```
+
+```javascript JavaScript
+$(document).ready(function(){
+  $('.center-slider').slick({
+    centerMode: true,
+    centerPadding: '60px',
+    slidesToShow: 3,
+    dots: true,
+    infinite: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          arrows: false,
+          centerMode: true,
+          centerPadding: '40px',
+          slidesToShow: 1
+        }
+      }
+    ]
+  });
+});
+```
+</CodeGroup>
+
+<CardGroup cols={2}>
+  <Card title="Desktop View" icon="desktop">
+    Shows 3 slides with the center one highlighted
+  </Card>
+  <Card title="Mobile View" icon="mobile">
+    Shows 1 slide with small padding revealing adjacent slides
+  </Card>
+</CardGroup>
+
+## Example 4: Synced Sliders (Product with Thumbnails)
+
+Product display with main image and thumbnail navigation.
+
+<CodeGroup>
+```html HTML
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
+  <style>
+    .product-display {
+      width: 600px;
+      margin: 50px auto;
+    }
+    .slider-for {
+      margin-bottom: 15px;
+    }
+    .slider-for img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .slider-nav img {
+      width: 100%;
+      cursor: pointer;
+      opacity: 0.6;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .slider-nav .slick-current img {
+      opacity: 1;
+      border-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="product-display">
+    <!-- Main Image Slider -->
+    <div class="slider slider-for">
+      <div><img src="https://placehold.co/600x400?text=Product+View+1"></div>
+      <div><img src="https://placehold.co/600x400?text=Product+View+2"></div>
+      <div><img src="https://placehold.co/600x400?text=Product+View+3"></div>
+      <div><img src="https://placehold.co/600x400?text=Product+View+4"></div>
+      <div><img src="https://placehold.co/600x400?text=Product+View+5"></div>
+    </div>
+
+    <!-- Thumbnail Navigation -->
+    <div class="slider slider-nav">
+      <div><img src="https://placehold.co/140x100?text=Thumb+1"></div>
+      <div><img src="https://placehold.co/140x100?text=Thumb+2"></div>
+      <div><img src="https://placehold.co/140x100?text=Thumb+3"></div>
+      <div><img src="https://placehold.co/140x100?text=Thumb+4"></div>
+      <div><img src="https://placehold.co/140x100?text=Thumb+5"></div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+</body>
+</html>
+```
+
+```javascript JavaScript
+$(document).ready(function(){
+  // Main image slider
+  $('.slider-for').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    fade: true,
+    asNavFor: '.slider-nav'
+  });
+
+  // Thumbnail navigation
+  $('.slider-nav').slick({
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    asNavFor: '.slider-for',
+    dots: false,
+    centerMode: true,
+    focusOnSelect: true,
+    centerPadding: '0px'
+  });
+});
+```
+</CodeGroup>
+
+<Steps>
+  <Step title="Create two sliders">
+    One for main display, one for thumbnails
+  </Step>
+  <Step title="Link with asNavFor">
+    Point each slider to the other using the `asNavFor` option
+  </Step>
+  <Step title="Enable focusOnSelect">
+    Allow clicking thumbnails to change the main image
+  </Step>
+</Steps>
+
+## Example 5: Vertical Slider
+
+A vertical scrolling carousel based on the demo from `index.html`.
+
+<CodeGroup>
+```html HTML
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f0f0f0;
+    }
+    .vertical-slider {
+      width: 400px;
+      height: 500px;
+    }
+    .slick-slide {
+      transition: all ease-in-out .3s;
+      opacity: 0.5;
+    }
+    .slick-slide img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .slick-current {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="vertical-slider">
+    <div><img src="https://placehold.co/350x150?text=Slide+1"></div>
+    <div><img src="https://placehold.co/350x150?text=Slide+2"></div>
+    <div><img src="https://placehold.co/350x150?text=Slide+3"></div>
+    <div><img src="https://placehold.co/350x150?text=Slide+4"></div>
+    <div><img src="https://placehold.co/350x150?text=Slide+5"></div>
+    <div><img src="https://placehold.co/350x150?text=Slide+6"></div>
+    <div><img src="https://placehold.co/350x150?text=Slide+7"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+</body>
+</html>
+```
+
+```javascript JavaScript
+$(document).ready(function(){
+  $('.vertical-slider').slick({
+    dots: true,
+    vertical: true,
+    verticalSwiping: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    centerMode: true,
+    centerPadding: '0px'
+  });
+});
+```
+</CodeGroup>
+
+<Warning>
+Make sure to set a fixed height on your slider container when using vertical mode.
+</Warning>
+
+## Example 6: Lazy Loading Gallery
+
+Based on the lazy loading example from `index.html:289-309`.
+
+<CodeGroup>
+```html HTML
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
+  <style>
+    .lazy-slider {
+      width: 80%;
+      margin: 50px auto;
+    }
+    .slick-slide img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .slick-loading img {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="lazy-slider" data-sizes="50vw">
+    <div>
+      <img 
+        data-lazy="https://placehold.co/350x300?text=Image+1" 
+        data-srcset="https://placehold.co/650x300?text=Image+1-650w 650w, https://placehold.co/960x300?text=Image+1-960w 960w" 
+        data-sizes="100vw"
+      >
+    </div>
+    <div>
+      <img 
+        data-lazy="https://placehold.co/350x300?text=Image+2" 
+        data-srcset="https://placehold.co/650x300?text=Image+2-650w 650w, https://placehold.co/960x300?text=Image+2-960w 960w" 
+        data-sizes="100vw"
+      >
+    </div>
+    <div>
+      <img 
+        data-lazy="https://placehold.co/350x300?text=Image+3" 
+        data-srcset="https://placehold.co/650x300?text=Image+3-650w 650w, https://placehold.co/960x300?text=Image+3-960w 960w" 
+        data-sizes="100vw"
+      >
+    </div>
+    <div>
+      <img 
+        data-lazy="https://placehold.co/350x300?text=Image+4" 
+        data-srcset="https://placehold.co/650x300?text=Image+4-650w 650w, https://placehold.co/960x300?text=Image+4-960w 960w" 
+        data-sizes="100vw"
+      >
+    </div>
+    <div>
+      <img 
+        data-lazy="https://placehold.co/350x300?text=Image+5" 
+        data-srcset="https://placehold.co/650x300?text=Image+5-650w 650w, https://placehold.co/960x300?text=Image+5-960w 960w" 
+        data-sizes="100vw"
+      >
+    </div>
+    <div>
+      <img 
+        data-lazy="https://placehold.co/350x300?text=Image+6" 
+        data-srcset="https://placehold.co/650x300?text=Image+6-650w 650w, https://placehold.co/960x300?text=Image+6-960w 960w"
+      >
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+</body>
+</html>
+```
+
+```javascript JavaScript
+$(document).ready(function(){
+  $('.lazy-slider').slick({
+    lazyLoad: 'ondemand',
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    dots: true,
+    infinite: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1
+        }
+      }
+    ]
+  });
+});
+```
+</CodeGroup>
+
+<Info>
+Images load as you navigate to them, improving initial page load performance. The `data-sizes` attribute can be inherited from the parent slider.
+</Info>
+
+## Configuration Comparison
+
+| Feature | Example 1 | Example 2 | Example 3 | Example 4 | Example 5 | Example 6 |
+|---------|-----------|-----------|-----------|-----------|-----------|----------|
+| **Use Case** | Products | Hero | Gallery | Product Detail | Vertical Feed | Performance |
+| **Responsive** | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ |
+| **Autoplay** | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Fade** | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| **Center Mode** | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ |
+| **Synced** | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| **Vertical** | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| **Lazy Load** | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+
+<Note>
+All examples are production-ready and can be customized to match your design requirements.
+</Note>

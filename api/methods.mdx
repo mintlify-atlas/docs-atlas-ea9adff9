@@ -1,0 +1,597 @@
+---
+title: Methods
+description: Complete reference for all Slick Carousel methods and their usage
+---
+
+# Methods
+
+Methods are called on Slick instances through the slick method itself. This allows you to call any internal slick method programmatically.
+
+## Basic Usage
+
+```javascript
+// Call a method on an initialized slider
+$('.your-slider').slick('methodName', arguments);
+```
+
+## Method Reference
+
+### slick
+
+```javascript
+$('.your-slider').slick(options);
+```
+
+Initializes Slick carousel with the provided options object.
+
+<ParamField path="options" type="object" required>
+  Configuration options for the slider. See the [Settings](/api/settings) page for all available options.
+</ParamField>
+
+**Example:**
+
+```javascript
+$('.your-slider').slick({
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 1
+});
+```
+
+---
+
+### unslick
+
+```javascript
+$('.your-slider').slick('unslick');
+```
+
+Destroys the Slick instance and removes all event listeners. Returns the slider to its pre-initialized state.
+
+**Example:**
+
+```javascript
+// Destroy the slider
+$('.your-slider').slick('unslick');
+```
+
+---
+
+### slickNext
+
+```javascript
+$('.your-slider').slick('slickNext');
+```
+
+Triggers the next slide transition.
+
+**Example:**
+
+```javascript
+// Move to next slide
+$('.your-slider').slick('slickNext');
+
+// Use with a custom button
+$('#custom-next-btn').on('click', function() {
+  $('.your-slider').slick('slickNext');
+});
+```
+
+---
+
+### slickPrev
+
+```javascript
+$('.your-slider').slick('slickPrev');
+```
+
+Triggers the previous slide transition.
+
+**Example:**
+
+```javascript
+// Move to previous slide
+$('.your-slider').slick('slickPrev');
+
+// Use with a custom button
+$('#custom-prev-btn').on('click', function() {
+  $('.your-slider').slick('slickPrev');
+});
+```
+
+---
+
+### slickPause
+
+```javascript
+$('.your-slider').slick('slickPause');
+```
+
+Pauses autoplay if enabled.
+
+**Example:**
+
+```javascript
+// Pause autoplay on button click
+$('#pause-btn').on('click', function() {
+  $('.your-slider').slick('slickPause');
+});
+
+// Pause when user hovers over content
+$('.content').on('mouseenter', function() {
+  $('.your-slider').slick('slickPause');
+});
+```
+
+---
+
+### slickPlay
+
+```javascript
+$('.your-slider').slick('slickPlay');
+```
+
+Starts autoplay. Also sets the `autoplay` option to `true`.
+
+**Example:**
+
+```javascript
+// Start autoplay on button click
+$('#play-btn').on('click', function() {
+  $('.your-slider').slick('slickPlay');
+});
+
+// Resume autoplay when user leaves content
+$('.content').on('mouseleave', function() {
+  $('.your-slider').slick('slickPlay');
+});
+```
+
+---
+
+### slickGoTo
+
+```javascript
+$('.your-slider').slick('slickGoTo', index, dontAnimate);
+```
+
+Goes to slide by index. Optionally skips animation.
+
+<ParamField path="index" type="integer" required>
+  Zero-based index of the slide to navigate to.
+</ParamField>
+
+<ParamField path="dontAnimate" type="boolean" default="false">
+  If `true`, skips the slide transition animation.
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Go to slide 3 with animation
+$('.your-slider').slick('slickGoTo', 2);
+
+// Go to slide 5 without animation
+$('.your-slider').slick('slickGoTo', 4, true);
+
+// Jump to first slide
+$('.your-slider').slick('slickGoTo', 0);
+
+// Create custom navigation
+$('.custom-nav-item').on('click', function() {
+  var slideIndex = $(this).data('slide');
+  $('.your-slider').slick('slickGoTo', slideIndex);
+});
+```
+
+---
+
+### slickCurrentSlide
+
+```javascript
+var currentSlide = $('.your-slider').slick('slickCurrentSlide');
+```
+
+Returns the zero-based index of the current slide.
+
+**Returns:** `integer` - The current slide index
+
+**Examples:**
+
+```javascript
+// Get current slide index
+var currentSlide = $('.your-slider').slick('slickCurrentSlide');
+console.log('Current slide:', currentSlide);
+
+// Display current slide to user
+var current = $('.your-slider').slick('slickCurrentSlide');
+$('#slide-counter').text('Slide ' + (current + 1));
+
+// Check if on first slide
+if ($('.your-slider').slick('slickCurrentSlide') === 0) {
+  console.log('On first slide');
+}
+```
+
+---
+
+### slickAdd
+
+```javascript
+$('.your-slider').slick('slickAdd', element, index, addBefore);
+```
+
+Add a slide to the carousel. Accepts HTML String or DOM object.
+
+<ParamField path="element" type="string | DOM object" required>
+  HTML string or DOM object of the slide to add.
+</ParamField>
+
+<ParamField path="index" type="integer" default="null">
+  Position where to insert the slide. If not provided, adds to the end or beginning based on `addBefore`.
+</ParamField>
+
+<ParamField path="addBefore" type="boolean" default="false">
+  If `true`, adds slide before the specified index or at the beginning. If `false`, adds after or at the end.
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Add slide to the end
+$('.your-slider').slick('slickAdd', '<div>New Slide</div>');
+
+// Add slide at the beginning
+$('.your-slider').slick('slickAdd', '<div>First Slide</div>', null, true);
+
+// Add slide at specific position (index 2)
+$('.your-slider').slick('slickAdd', '<div>Slide Content</div>', 2);
+
+// Add slide before index 3
+$('.your-slider').slick('slickAdd', '<div>Before Slide</div>', 3, true);
+
+// Add DOM element
+var newSlide = document.createElement('div');
+newSlide.innerHTML = '<h3>Dynamic Slide</h3>';
+$('.your-slider').slick('slickAdd', newSlide);
+
+// Add multiple slides
+var slides = [
+  '<div>Slide 1</div>',
+  '<div>Slide 2</div>',
+  '<div>Slide 3</div>'
+];
+slides.forEach(function(slide) {
+  $('.your-slider').slick('slickAdd', slide);
+});
+```
+
+---
+
+### slickRemove
+
+```javascript
+$('.your-slider').slick('slickRemove', index, removeBefore);
+```
+
+Remove slide by index.
+
+<ParamField path="index" type="integer" default="null">
+  Index of the slide to remove. If not provided, removes the first or last slide based on `removeBefore`.
+</ParamField>
+
+<ParamField path="removeBefore" type="boolean" default="false">
+  If `true`, removes slide preceding index, or the first slide if no index specified. If `false`, removes the slide following index, or the last slide if no index set.
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Remove last slide
+$('.your-slider').slick('slickRemove');
+
+// Remove first slide
+$('.your-slider').slick('slickRemove', null, true);
+
+// Remove slide at index 2
+$('.your-slider').slick('slickRemove', 2);
+
+// Remove slide before index 4
+$('.your-slider').slick('slickRemove', 4, true);
+
+// Remove current slide
+var current = $('.your-slider').slick('slickCurrentSlide');
+$('.your-slider').slick('slickRemove', current);
+```
+
+---
+
+### slickFilter
+
+```javascript
+$('.your-slider').slick('slickFilter', filter);
+```
+
+Filters slides using jQuery `.filter()` syntax.
+
+<ParamField path="filter" type="string | function" required>
+  jQuery selector string or filter function to determine which slides to show.
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Filter by class
+$('.your-slider').slick('slickFilter', '.category-tech');
+
+// Filter by data attribute
+$('.your-slider').slick('slickFilter', '[data-type="featured"]');
+
+// Filter using function
+$('.your-slider').slick('slickFilter', function(index) {
+  return index % 2 === 0; // Show only even slides
+});
+
+// Filter based on content
+$('.your-slider').slick('slickFilter', function() {
+  return $(this).find('.price').text().indexOf('$') !== -1;
+});
+
+// Category filter example
+$('.filter-btn').on('click', function() {
+  var category = $(this).data('category');
+  $('.your-slider').slick('slickFilter', '[data-category="' + category + '"]');
+});
+```
+
+---
+
+### slickUnfilter
+
+```javascript
+$('.your-slider').slick('slickUnfilter');
+```
+
+Removes applied filter and shows all slides.
+
+**Example:**
+
+```javascript
+// Remove filter
+$('.your-slider').slick('slickUnfilter');
+
+// Reset filter button
+$('#reset-filter').on('click', function() {
+  $('.your-slider').slick('slickUnfilter');
+});
+```
+
+---
+
+### slickGetOption
+
+```javascript
+var optionValue = $('.your-slider').slick('slickGetOption', optionName);
+```
+
+Gets the current value of a specified option.
+
+<ParamField path="optionName" type="string" required>
+  Name of the option to retrieve.
+</ParamField>
+
+**Returns:** The current value of the specified option
+
+**Examples:**
+
+```javascript
+// Get autoplay speed
+var speed = $('.your-slider').slick('slickGetOption', 'autoplaySpeed');
+console.log('Autoplay speed:', speed);
+
+// Check if infinite loop is enabled
+var isInfinite = $('.your-slider').slick('slickGetOption', 'infinite');
+if (isInfinite) {
+  console.log('Infinite loop is enabled');
+}
+
+// Get number of slides to show
+var slidesToShow = $('.your-slider').slick('slickGetOption', 'slidesToShow');
+$('#info').text('Showing ' + slidesToShow + ' slides');
+```
+
+---
+
+### slickSetOption
+
+```javascript
+$('.your-slider').slick('slickSetOption', option, value, refresh);
+```
+
+Changes one or more options. Can update UI immediately with the `refresh` parameter.
+
+#### Single Option
+
+<ParamField path="option" type="string" required>
+  Name of the option to change.
+</ParamField>
+
+<ParamField path="value" type="any" required>
+  New value for the option.
+</ParamField>
+
+<ParamField path="refresh" type="boolean" default="false">
+  If `true`, updates the UI immediately to reflect changes.
+</ParamField>
+
+**Examples:**
+
+```javascript
+// Change speed with refresh
+$('.your-slider').slick('slickSetOption', 'speed', 5000, true);
+
+// Enable autoplay
+$('.your-slider').slick('slickSetOption', 'autoplay', true, true);
+
+// Change slides to show
+$('.your-slider').slick('slickSetOption', 'slidesToShow', 4, true);
+
+// Update autoplay speed without refresh
+$('.your-slider').slick('slickSetOption', 'autoplaySpeed', 2000, false);
+```
+
+#### Multiple Options
+
+```javascript
+$('.your-slider').slick('slickSetOption', {
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  dots: true
+}, true);
+```
+
+**Example:**
+
+```javascript
+// Update multiple settings at once
+$('.your-slider').slick('slickSetOption', {
+  autoplay: true,
+  autoplaySpeed: 3000,
+  speed: 500,
+  fade: true
+}, true);
+```
+
+#### Responsive Settings
+
+```javascript
+$('.your-slider').slick('slickSetOption', 'responsive', [
+  {
+    breakpoint: 1024,
+    settings: {
+      slidesToShow: 3,
+      infinite: true
+    }
+  },
+  {
+    breakpoint: 600,
+    settings: {
+      slidesToShow: 2,
+      dots: true
+    }
+  }
+], true);
+```
+
+**Example:**
+
+```javascript
+// Add or change responsive breakpoints
+$('.your-slider').slick('slickSetOption', 'responsive', [
+  {
+    breakpoint: 768,
+    settings: {
+      slidesToShow: 2,
+      slidesToScroll: 2
+    }
+  },
+  {
+    breakpoint: 480,
+    settings: {
+      slidesToShow: 1,
+      slidesToScroll: 1
+    }
+  }
+], true);
+```
+
+---
+
+### setPosition
+
+```javascript
+$('.your-slider').slick('setPosition');
+```
+
+Manually refresh positioning of slick. Useful after dynamically changing slider content or dimensions.
+
+**Examples:**
+
+```javascript
+// Refresh after window resize
+$(window).on('resize', function() {
+  $('.your-slider').slick('setPosition');
+});
+
+// Refresh after loading images
+$('.your-slider img').on('load', function() {
+  $('.your-slider').slick('setPosition');
+});
+
+// Refresh after showing hidden slider
+$('#show-slider-btn').on('click', function() {
+  $('.slider-container').show();
+  $('.your-slider').slick('setPosition');
+});
+
+// Refresh after changing content
+$('.slide-content').html('<p>New content</p>');
+$('.your-slider').slick('setPosition');
+```
+
+## Complete Example
+
+```javascript
+// Initialize slider
+$('.product-slider').slick({
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 3000
+});
+
+// Custom controls
+$('#custom-prev').on('click', function() {
+  $('.product-slider').slick('slickPrev');
+});
+
+$('#custom-next').on('click', function() {
+  $('.product-slider').slick('slickNext');
+});
+
+// Toggle autoplay
+$('#toggle-autoplay').on('click', function() {
+  var isPlaying = $(this).hasClass('playing');
+  if (isPlaying) {
+    $('.product-slider').slick('slickPause');
+    $(this).removeClass('playing').text('Play');
+  } else {
+    $('.product-slider').slick('slickPlay');
+    $(this).addClass('playing').text('Pause');
+  }
+});
+
+// Add slide dynamically
+$('#add-slide').on('click', function() {
+  var newSlide = '<div class="slide"><h3>New Product</h3></div>';
+  $('.product-slider').slick('slickAdd', newSlide);
+});
+
+// Filter by category
+$('.category-filter').on('click', function() {
+  var category = $(this).data('category');
+  if (category === 'all') {
+    $('.product-slider').slick('slickUnfilter');
+  } else {
+    $('.product-slider').slick('slickFilter', '[data-category="' + category + '"]');
+  }
+});
+
+// Display current slide
+$('.product-slider').on('afterChange', function(event, slick, currentSlide) {
+  var total = slick.slideCount;
+  $('#slide-info').text((currentSlide + 1) + ' of ' + total);
+});
+```

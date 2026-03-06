@@ -1,97 +1,120 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Slick Carousel"
+description: "The last carousel you'll ever need"
 ---
 
-## Setting up
+<Note>
+Slick is a fully responsive carousel jQuery plugin that just works. With over 28,000 stars on GitHub, it's battle-tested and production-ready.
+</Note>
 
-Get your documentation site up and running in minutes.
+## Why Slick?
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
+Slick Carousel is a powerful, flexible, and fully-featured carousel plugin that handles everything from simple image sliders to complex product showcases.
+
+<CardGroup cols={2}>
+  <Card title="Fully Responsive" icon="mobile" href="/concepts/responsive-design">
+    Scales perfectly with any screen size and orientation
+  </Card>
+  <Card title="Touch Enabled" icon="hand-pointer" href="/guides/basic-usage">
+    Native touch and swipe support for mobile devices
+  </Card>
+  <Card title="Infinite Looping" icon="arrows-rotate" href="/api/settings">
+    Seamless infinite scrolling in both directions
+  </Card>
+  <Card title="Highly Customizable" icon="sliders" href="/concepts/configuration">
+    Over 50 settings to configure exactly what you need
+  </Card>
+</CardGroup>
+
+## Quick Start
+
+Get up and running with Slick in minutes.
+
+<Steps>
+  <Step title="Install via CDN or package manager">
+    ```html
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    ```
+  </Step>
+  
+  <Step title="Add your HTML markup">
+    ```html
+    <div class="your-slider">
+      <div><img src="image1.jpg" alt="Slide 1"></div>
+      <div><img src="image2.jpg" alt="Slide 2"></div>
+      <div><img src="image3.jpg" alt="Slide 3"></div>
+    </div>
+    ```
+  </Step>
+  
+  <Step title="Initialize Slick">
+    ```javascript
+    $('.your-slider').slick({
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1
+    });
+    ```
+  </Step>
+</Steps>
+
+<Card title="View Full Quickstart Guide" icon="rocket" href="/quickstart" horizontal>
+  Learn more about installation options and basic configuration
 </Card>
 
-## Make it yours
+## Key Features
 
-Design a docs site that looks great and empowers your users.
+<CardGroup cols={3}>
+  <Card title="Autoplay" icon="play">
+    Automatic slide rotation with pause on hover
+  </Card>
+  <Card title="Lazy Loading" icon="image">
+    Load images on demand for better performance
+  </Card>
+  <Card title="Center Mode" icon="align-center">
+    Highlight the current slide with partial prev/next visibility
+  </Card>
+  <Card title="Vertical Mode" icon="arrows-up-down">
+    Slide vertically instead of horizontally
+  </Card>
+  <Card title="Variable Width" icon="ruler-horizontal">
+    Support for slides with different widths
+  </Card>
+  <Card title="Sync Sliders" icon="link">
+    Synchronize multiple sliders together
+  </Card>
+</CardGroup>
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+## Explore the Docs
 
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Install via npm, CDN, or download directly
   </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
+  <Card title="Configuration" icon="gear" href="/concepts/configuration">
+    Learn about all available settings and options
   </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
+  <Card title="API Methods" icon="code" href="/api/methods">
+    Control your slider programmatically
   </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
+  <Card title="Events" icon="bolt" href="/api/events">
+    Hook into slider events for custom behavior
   </Card>
-</Columns>
+  <Card title="Advanced Features" icon="wand-magic-sparkles" href="/guides/advanced-features">
+    Discover advanced capabilities and techniques
+  </Card>
+  <Card title="Examples" icon="images" href="/guides/examples">
+    See real-world examples and demos
+  </Card>
+</CardGroup>
 
-## Need inspiration?
+## Browser Support
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
+Slick works on IE8+ and all modern browsers including Chrome, Firefox, Safari, and Edge.
+
+<Card title="Learn More" icon="browser" href="/resources/browser-support" horizontal>
+  View detailed browser compatibility information
 </Card>

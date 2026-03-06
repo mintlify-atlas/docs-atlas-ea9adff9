@@ -1,0 +1,423 @@
+---
+title: Data Attribute Configuration
+description: Learn how to configure Slick Carousel using HTML data attributes for simpler initialization
+---
+
+## Overview
+
+Since version 1.5, Slick supports configuration through the `data-slick` attribute. This allows you to define settings directly in your HTML markup.
+
+<Note>
+You still need to call `$(element).slick()` to initialize slick, even when using data attributes.
+</Note>
+
+## Basic Syntax
+
+The `data-slick` attribute accepts a JSON string with your configuration:
+
+```html
+<div data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
+  <div><h3>1</h3></div>
+  <div><h3>2</h3></div>
+  <div><h3>3</h3></div>
+  <div><h3>4</h3></div>
+  <div><h3>5</h3></div>
+  <div><h3>6</h3></div>
+</div>
+```
+
+```javascript
+// Initialize
+$('[data-slick]').slick();
+```
+
+<Warning>
+The JSON in the `data-slick` attribute must use double quotes around property names and string values.
+</Warning>
+
+## Common Configurations
+
+<Tabs>
+  <Tab title="Multiple Slides">
+    ```html
+    <div data-slick='{"slidesToShow": 3, "slidesToScroll": 3, "dots": true}'>
+      <div><img src="slide1.jpg"></div>
+      <div><img src="slide2.jpg"></div>
+      <div><img src="slide3.jpg"></div>
+      <div><img src="slide4.jpg"></div>
+      <div><img src="slide5.jpg"></div>
+      <div><img src="slide6.jpg"></div>
+    </div>
+    ```
+  </Tab>
+  <Tab title="Autoplay">
+    ```html
+    <div data-slick='{"autoplay": true, "autoplaySpeed": 2000}'>
+      <div><img src="slide1.jpg"></div>
+      <div><img src="slide2.jpg"></div>
+      <div><img src="slide3.jpg"></div>
+    </div>
+    ```
+  </Tab>
+  <Tab title="Center Mode">
+    ```html
+    <div data-slick='{"centerMode": true, "centerPadding": "60px", "slidesToShow": 3}'>
+      <div><img src="slide1.jpg"></div>
+      <div><img src="slide2.jpg"></div>
+      <div><img src="slide3.jpg"></div>
+      <div><img src="slide4.jpg"></div>
+      <div><img src="slide5.jpg"></div>
+    </div>
+    ```
+  </Tab>
+  <Tab title="Fade Effect">
+    ```html
+    <div data-slick='{"fade": true, "cssEase": "linear"}'>
+      <div><img src="slide1.jpg"></div>
+      <div><img src="slide2.jpg"></div>
+      <div><img src="slide3.jpg"></div>
+    </div>
+    ```
+  </Tab>
+</Tabs>
+
+## Initialization Patterns
+
+### Single Slider
+
+```html
+<div class="my-slider" data-slick='{"dots": true, "infinite": true}'>
+  <!-- slides -->
+</div>
+
+<script>
+$('.my-slider').slick();
+</script>
+```
+
+### Multiple Sliders
+
+```html
+<div class="slider-1" data-slick='{"slidesToShow": 3}'>
+  <!-- slides -->
+</div>
+
+<div class="slider-2" data-slick='{"slidesToShow": 1, "fade": true}'>
+  <!-- slides -->
+</div>
+
+<script>
+// Initialize all sliders with data-slick attribute
+$('[data-slick]').slick();
+</script>
+```
+
+### Override with JavaScript
+
+JavaScript options override data attribute settings:
+
+```html
+<div class="slider" data-slick='{"slidesToShow": 3}'>
+  <!-- slides -->
+</div>
+
+<script>
+// slidesToShow will be 4, not 3
+$('.slider').slick({
+  slidesToShow: 4,
+  dots: true
+});
+</script>
+```
+
+## Responsive Configuration
+
+You can include responsive breakpoints in the data attribute:
+
+```html
+<div data-slick='{
+  "slidesToShow": 4,
+  "slidesToScroll": 4,
+  "responsive": [
+    {
+      "breakpoint": 1024,
+      "settings": {
+        "slidesToShow": 3,
+        "slidesToScroll": 3
+      }
+    },
+    {
+      "breakpoint": 600,
+      "settings": {
+        "slidesToShow": 2,
+        "slidesToScroll": 2
+      }
+    },
+    {
+      "breakpoint": 480,
+      "settings": {
+        "slidesToShow": 1,
+        "slidesToScroll": 1
+      }
+    }
+  ]
+}'>
+  <div><h3>1</h3></div>
+  <div><h3>2</h3></div>
+  <div><h3>3</h3></div>
+  <div><h3>4</h3></div>
+  <div><h3>5</h3></div>
+  <div><h3>6</h3></div>
+</div>
+```
+
+<Info>
+For better readability, consider formatting the JSON across multiple lines as shown above.
+</Info>
+
+## Lazy Loading with Data Attributes
+
+The `data-sizes` attribute can be set on the slider container:
+
+```html
+<section class="lazy slider" data-slick='{"lazyLoad": "ondemand"}' data-sizes="50vw">
+  <div>
+    <img data-lazy="image-350w.jpg" 
+         data-srcset="image-650w.jpg 650w, image-960w.jpg 960w" 
+         data-sizes="100vw">
+  </div>
+  <div>
+    <img data-lazy="image2-350w.jpg" 
+         data-srcset="image2-650w.jpg 650w, image2-960w.jpg 960w">
+    <!-- This inherits data-sizes from parent -->
+  </div>
+</section>
+```
+
+## Complete Examples
+
+<Steps>
+  <Step title="Basic Gallery">
+    ```html
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <link rel="stylesheet" href="slick/slick.css"/>
+      <link rel="stylesheet" href="slick/slick-theme.css"/>
+    </head>
+    <body>
+      <div class="gallery" 
+           data-slick='{"dots": true, "infinite": true, "speed": 500}'>
+        <div><img src="img1.jpg"></div>
+        <div><img src="img2.jpg"></div>
+        <div><img src="img3.jpg"></div>
+      </div>
+
+      <script src="jquery.js"></script>
+      <script src="slick/slick.min.js"></script>
+      <script>
+        $('.gallery').slick();
+      </script>
+    </body>
+    </html>
+    ```
+  </Step>
+  <Step title="Product Carousel">
+    ```html
+    <div class="product-carousel" 
+         data-slick='{
+           "slidesToShow": 4,
+           "slidesToScroll": 1,
+           "autoplay": true,
+           "autoplaySpeed": 3000,
+           "arrows": true,
+           "dots": false,
+           "responsive": [
+             {
+               "breakpoint": 768,
+               "settings": {
+                 "slidesToShow": 2
+               }
+             },
+             {
+               "breakpoint": 480,
+               "settings": {
+                 "slidesToShow": 1
+               }
+             }
+           ]
+         }'>
+      <div class="product"><img src="product1.jpg"></div>
+      <div class="product"><img src="product2.jpg"></div>
+      <div class="product"><img src="product3.jpg"></div>
+      <div class="product"><img src="product4.jpg"></div>
+      <div class="product"><img src="product5.jpg"></div>
+    </div>
+
+    <script>
+    $('.product-carousel').slick();
+    </script>
+    ```
+  </Step>
+  <Step title="Hero Slider">
+    ```html
+    <div class="hero-slider" 
+         data-slick='{
+           "fade": true,
+           "cssEase": "linear",
+           "autoplay": true,
+           "autoplaySpeed": 5000,
+           "arrows": false,
+           "dots": true,
+           "pauseOnHover": true
+         }'>
+      <div class="hero-slide">
+        <img src="hero1.jpg" alt="Hero 1">
+        <div class="hero-content">
+          <h2>Welcome to Our Site</h2>
+          <p>Discover amazing products</p>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="hero2.jpg" alt="Hero 2">
+        <div class="hero-content">
+          <h2>Quality Products</h2>
+          <p>Built to last</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    $('.hero-slider').slick();
+    </script>
+    ```
+  </Step>
+</Steps>
+
+## Property Name Reference
+
+<Note>
+All property names in the data-slick JSON must match the JavaScript option names exactly and use camelCase.
+</Note>
+
+<CardGroup cols={2}>
+  <Card title="Boolean Values">
+    ```json
+    {
+      "arrows": true,
+      "dots": false,
+      "infinite": true,
+      "fade": false
+    }
+    ```
+  </Card>
+  <Card title="Number Values">
+    ```json
+    {
+      "slidesToShow": 3,
+      "slidesToScroll": 1,
+      "speed": 500,
+      "autoplaySpeed": 3000
+    }
+    ```
+  </Card>
+  <Card title="String Values">
+    ```json
+    {
+      "cssEase": "linear",
+      "lazyLoad": "ondemand",
+      "respondTo": "window"
+    }
+    ```
+  </Card>
+  <Card title="Array/Object Values">
+    ```json
+    {
+      "responsive": [
+        {
+          "breakpoint": 768,
+          "settings": {}
+        }
+      ]
+    }
+    ```
+  </Card>
+</CardGroup>
+
+## Implementation Details
+
+From `slick.js:158`, data attributes are read during initialization:
+
+```javascript
+dataSettings = $(element).data('slick') || {};
+
+_.options = $.extend({}, _.defaults, settings, dataSettings);
+```
+
+The priority order is:
+1. Default settings (lowest priority)
+2. Data attribute settings
+3. JavaScript initialization settings (highest priority)
+
+## Common Pitfalls
+
+<Warning>
+Avoid these common mistakes when using data attributes:
+</Warning>
+
+### Invalid JSON Syntax
+
+```html
+<!-- ❌ Wrong: Single quotes on properties -->
+<div data-slick="{'slidesToShow': 3}">
+
+<!-- ❌ Wrong: Missing quotes on property names -->
+<div data-slick='{slidesToShow: 3}'>
+
+<!-- ✅ Correct: Double quotes everywhere -->
+<div data-slick='{"slidesToShow": 3}'>
+```
+
+### Mixing Quote Types
+
+```html
+<!-- ❌ Wrong: Single quotes for attribute value -->
+<div data-slick='{"dots": true}'>
+
+<!-- ✅ Correct: Single quotes for attribute, double for JSON -->
+<div data-slick='{"dots": true}'>
+```
+
+### Forgetting Initialization
+
+```html
+<!-- ❌ Wrong: Data attribute alone doesn't work -->
+<div data-slick='{"dots": true}'>
+  <!-- slides -->
+</div>
+
+<!-- ✅ Correct: Must call .slick() -->
+<div data-slick='{"dots": true}'>
+  <!-- slides -->
+</div>
+<script>
+$('[data-slick]').slick();
+</script>
+```
+
+## Benefits of Data Attributes
+
+<CardGroup cols={2}>
+  <Card title="Separation of Concerns" icon="layer-group">
+    Keep configuration with HTML markup
+  </Card>
+  <Card title="CMS Friendly" icon="wrench">
+    Easier to configure in content management systems
+  </Card>
+  <Card title="Multiple Instances" icon="copy">
+    Different settings per slider without extra JavaScript
+  </Card>
+  <Card title="Quick Prototyping" icon="bolt">
+    Faster to set up for simple use cases
+  </Card>
+</CardGroup>

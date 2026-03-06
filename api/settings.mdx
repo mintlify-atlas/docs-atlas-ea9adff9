@@ -1,0 +1,302 @@
+---
+title: Settings
+description: Complete reference for all Slick Carousel configuration options
+---
+
+# Settings
+
+All settings can be configured when initializing Slick or via data attributes. Below is the complete list of available options.
+
+## Basic Usage
+
+```javascript
+$('.your-slider').slick({
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 1
+});
+```
+
+## Data Attribute Configuration
+
+In Slick 1.5+, you can add settings using the `data-slick` attribute:
+
+```html
+<div data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
+  <div><h3>1</h3></div>
+  <div><h3>2</h3></div>
+  <div><h3>3</h3></div>
+</div>
+```
+
+## Configuration Options
+
+<ParamField path="accessibility" type="boolean" default="true">
+  Enables tabbing and arrow key navigation. Unless `autoplay: true`, sets browser focus to current slide (or first of current slide set, if multiple `slidesToShow`) after slide change. For full a11y compliance enable focusOnChange in addition to this.
+</ParamField>
+
+<ParamField path="adaptiveHeight" type="boolean" default="false">
+  Adapts slider height to the current slide.
+</ParamField>
+
+<ParamField path="appendArrows" type="string | jQuery object" default="$(element)">
+  Change where the navigation arrows are attached. Accepts Selector, htmlString, Array, Element, or jQuery object.
+</ParamField>
+
+<ParamField path="appendDots" type="string | jQuery object" default="$(element)">
+  Change where the navigation dots are attached. Accepts Selector, htmlString, Array, Element, or jQuery object.
+</ParamField>
+
+<ParamField path="arrows" type="boolean" default="true">
+  Enable Next/Prev arrows.
+</ParamField>
+
+<ParamField path="asNavFor" type="string" default="null">
+  Enables syncing of multiple sliders. Pass a jQuery selector or element.
+</ParamField>
+
+<ParamField path="autoplay" type="boolean" default="false">
+  Enables auto play of slides.
+</ParamField>
+
+<ParamField path="autoplaySpeed" type="integer" default="3000">
+  Auto play change interval in milliseconds.
+</ParamField>
+
+<ParamField path="centerMode" type="boolean" default="false">
+  Enables centered view with partial prev/next slides. Use with odd numbered slidesToShow counts.
+</ParamField>
+
+<ParamField path="centerPadding" type="string" default="'50px'">
+  Side padding when in center mode. Accepts values in px or %.
+</ParamField>
+
+<ParamField path="cssEase" type="string" default="'ease'">
+  CSS3 easing function for transitions.
+</ParamField>
+
+<ParamField path="customPaging" type="function" default="n/a">
+  Custom paging templates. Accepts a function that returns HTML for each dot.
+  
+  ```javascript
+  customPaging: function(slider, i) {
+    return $('<button type="button"></button>').text(i + 1);
+  }
+  ```
+</ParamField>
+
+<ParamField path="dots" type="boolean" default="false">
+  Show current slide indicator dots.
+</ParamField>
+
+<ParamField path="dotsClass" type="string" default="'slick-dots'">
+  Class name for slide indicator dots container.
+</ParamField>
+
+<ParamField path="draggable" type="boolean" default="true">
+  Enables desktop dragging with mouse.
+</ParamField>
+
+<ParamField path="easing" type="string" default="'linear'">
+  jQuery animate() fallback easing function.
+</ParamField>
+
+<ParamField path="edgeFriction" type="number" default="0.15">
+  Resistance when swiping edges of non-infinite carousels. Value between 0 and 1.
+</ParamField>
+
+<ParamField path="fade" type="boolean" default="false">
+  Enables fade transition between slides instead of slide animation.
+</ParamField>
+
+<ParamField path="focusOnSelect" type="boolean" default="false">
+  Enable focus on selected element when clicked.
+</ParamField>
+
+<ParamField path="focusOnChange" type="boolean" default="false">
+  Puts focus on slide after change for improved accessibility.
+</ParamField>
+
+<ParamField path="infinite" type="boolean" default="true">
+  Enables infinite looping of slides.
+</ParamField>
+
+<ParamField path="initialSlide" type="integer" default="0">
+  Slide index to start on (zero-based).
+</ParamField>
+
+<ParamField path="lazyLoad" type="string" default="'ondemand'">
+  Lazy load technique. Accepts:
+  - `'ondemand'`: Loads image as soon as you slide to it
+  - `'progressive'`: Loads one image after the other when page loads
+</ParamField>
+
+<ParamField path="mobileFirst" type="boolean" default="false">
+  Responsive settings use mobile first calculation.
+</ParamField>
+
+<ParamField path="nextArrow" type="string | jQuery object" default="<button type='button' class='slick-next'>Next</button>">
+  Allows you to select a node or customize the HTML for the "Next" arrow. Can be an HTML string, jQuery selector, or DOM node.
+</ParamField>
+
+<ParamField path="pauseOnDotsHover" type="boolean" default="false">
+  Pauses autoplay when a dot is hovered.
+</ParamField>
+
+<ParamField path="pauseOnFocus" type="boolean" default="true">
+  Pauses autoplay when slider is focused.
+</ParamField>
+
+<ParamField path="pauseOnHover" type="boolean" default="true">
+  Pauses autoplay when slider is hovered.
+</ParamField>
+
+<ParamField path="prevArrow" type="string | jQuery object" default="<button type='button' class='slick-prev'>Previous</button>">
+  Allows you to select a node or customize the HTML for the "Previous" arrow. Can be an HTML string, jQuery selector, or DOM node.
+</ParamField>
+
+<ParamField path="respondTo" type="string" default="'window'">
+  Width that responsive object responds to. Options:
+  - `'window'`: Responds to window width
+  - `'slider'`: Responds to slider width
+  - `'min'`: Responds to the smaller of the two
+</ParamField>
+
+<ParamField path="responsive" type="array" default="null">
+  Array of objects containing breakpoints and settings objects. Enables settings at given breakpoint. Set `settings` to `"unslick"` to disable slick at a given breakpoint.
+  
+  ```javascript
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        infinite: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 300,
+      settings: "unslick" // destroys slick
+    }
+  ]
+  ```
+</ParamField>
+
+<ParamField path="rows" type="integer" default="1">
+  Setting this to more than 1 initializes grid mode. Use `slidesPerRow` to set how many slides should be in each row.
+</ParamField>
+
+<ParamField path="rtl" type="boolean" default="false">
+  Change the slider's direction to become right-to-left.
+</ParamField>
+
+<ParamField path="slide" type="string" default="''">
+  Slide element query selector.
+</ParamField>
+
+<ParamField path="slidesPerRow" type="integer" default="1">
+  With grid mode initialized via the rows option, this sets how many slides are in each grid row.
+</ParamField>
+
+<ParamField path="slidesToScroll" type="integer" default="1">
+  Number of slides to scroll at a time.
+</ParamField>
+
+<ParamField path="slidesToShow" type="integer" default="1">
+  Number of slides to show at a time.
+</ParamField>
+
+<ParamField path="speed" type="integer" default="300">
+  Transition speed in milliseconds.
+</ParamField>
+
+<ParamField path="swipe" type="boolean" default="true">
+  Enables touch swipe on mobile devices.
+</ParamField>
+
+<ParamField path="swipeToSlide" type="boolean" default="false">
+  Swipe to slide irrespective of slidesToScroll setting.
+</ParamField>
+
+<ParamField path="touchMove" type="boolean" default="true">
+  Enables slide moving with touch.
+</ParamField>
+
+<ParamField path="touchThreshold" type="integer" default="5">
+  To advance slides, the user must swipe a length of (1/touchThreshold) * the width of the slider.
+</ParamField>
+
+<ParamField path="useCSS" type="boolean" default="true">
+  Enable/Disable CSS Transitions.
+</ParamField>
+
+<ParamField path="useTransform" type="boolean" default="true">
+  Enable/Disable CSS Transforms.
+</ParamField>
+
+<ParamField path="variableWidth" type="boolean" default="false">
+  Disables automatic slide width calculation. Useful for slides with varying widths.
+</ParamField>
+
+<ParamField path="vertical" type="boolean" default="false">
+  Vertical slide direction.
+</ParamField>
+
+<ParamField path="verticalSwiping" type="boolean" default="false">
+  Changes swipe direction to vertical.
+</ParamField>
+
+<ParamField path="waitForAnimate" type="boolean" default="true">
+  Ignores requests to advance the slide while animating.
+</ParamField>
+
+<ParamField path="zIndex" type="number" default="1000">
+  Set the zIndex values for slides, useful for IE9 and lower.
+</ParamField>
+
+## Responsive Configuration Example
+
+The `responsive` option allows you to define different settings at different breakpoints:
+
+```javascript
+$('.slider').slick({
+  infinite: false,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+});
+```

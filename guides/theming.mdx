@@ -1,0 +1,524 @@
+---
+title: Theming & Customization
+description: Customize Slick Carousel's appearance using CSS, Sass variables, and custom styling options
+---
+
+## Theme Files Overview
+
+Slick Carousel comes with two main CSS files:
+
+<CardGroup cols={2}>
+  <Card title="slick.css" icon="file-code">
+    Core structural styles required for functionality
+  </Card>
+  <Card title="slick-theme.css" icon="paintbrush">
+    Optional default theme with arrows and dots styling
+  </Card>
+</CardGroup>
+
+```html
+<!-- Required: Core styles -->
+<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+
+<!-- Optional: Default theme -->
+<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+```
+
+<Note>
+The theme file is optional. You can create your own custom styles instead of using `slick-theme.css`.
+</Note>
+
+## Sass Variables
+
+If you're using Sass, customize Slick's theme by overriding these variables:
+
+### Available Variables
+
+| Variable | Type | Default | Description |
+|----------|------|---------|-------------|
+| `$slick-font-path` | string | `"./fonts/"` | Directory path for the slick icon font |
+| `$slick-font-family` | string | `"slick"` | Font-family for slick icon font |
+| `$slick-loader-path` | string | `"./"` | Directory path for the loader image |
+| `$slick-arrow-color` | color | `white` | Color of the left/right arrow icons |
+| `$slick-dot-color` | color | `black` | Color of the navigation dots |
+| `$slick-dot-color-active` | color | `$slick-dot-color` | Color of the active navigation dot |
+| `$slick-prev-character` | string | `'\2190'` | Unicode character for the previous arrow (←) |
+| `$slick-next-character` | string | `'\2192'` | Unicode character for the next arrow (→) |
+| `$slick-dot-character` | string | `'\2022'` | Unicode character for the navigation dot (•) |
+| `$slick-dot-size` | pixels | `6px` | Size of the navigation dots |
+| `$slick-opacity-default` | float | `0.75` | Default opacity for arrows and active dots |
+| `$slick-opacity-on-hover` | float | `1` | Opacity on hover state |
+| `$slick-opacity-not-active` | float | `0.25` | Opacity for inactive dots |
+
+### Using Sass Variables
+
+<CodeGroup>
+```scss Custom Colors
+// Override before importing slick-theme
+$slick-arrow-color: #ff0000;
+$slick-dot-color: #333;
+$slick-dot-color-active: #ff0000;
+
+@import "slick-carousel/slick/slick-theme.scss";
+```
+
+```scss Custom Icons
+$slick-prev-character: '\2039';  // ‹
+$slick-next-character: '\203A';  // ›
+$slick-dot-character: '\25CF';   // ●
+
+@import "slick-carousel/slick/slick-theme.scss";
+```
+
+```scss Custom Paths
+$slick-font-path: "/assets/fonts/";
+$slick-loader-path: "/assets/images/";
+
+@import "slick-carousel/slick/slick-theme.scss";
+```
+</CodeGroup>
+
+## Customizing Arrows
+
+### CSS Customization
+
+Override the default arrow styles:
+
+```css
+.slick-prev,
+.slick-next {
+  width: 40px;
+  height: 40px;
+  z-index: 1;
+}
+
+.slick-prev {
+  left: 25px;
+}
+
+.slick-next {
+  right: 25px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-size: 40px;
+  color: #333;
+}
+```
+
+### Example from Source
+
+From `index.html:31-34`:
+
+```css
+.slick-prev:before,
+.slick-next:before {
+  color: black;
+}
+```
+
+### HTML Custom Arrows
+
+Replace arrows with custom HTML:
+
+```javascript
+$('.slider').slick({
+  prevArrow: '<button type="button" class="custom-prev"><i class="fa fa-chevron-left"></i></button>',
+  nextArrow: '<button type="button" class="custom-next"><i class="fa fa-chevron-right"></i></button>',
+  appendArrows: '.custom-arrows-container'
+});
+```
+
+<Steps>
+  <Step title="Define custom arrow HTML">
+    Use the `prevArrow` and `nextArrow` options with your custom HTML
+  </Step>
+  <Step title="Position with CSS">
+    Style your custom arrow elements with CSS
+  </Step>
+  <Step title="Specify container (optional)">
+    Use `appendArrows` to place arrows in a specific container
+  </Step>
+</Steps>
+
+## Customizing Dots
+
+### CSS Styling
+
+```css
+.slick-dots {
+  bottom: -45px;
+}
+
+.slick-dots li button:before {
+  font-size: 12px;
+  color: #999;
+  opacity: 0.5;
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 1;
+  color: #000;
+}
+
+.slick-dots li button:hover:before,
+.slick-dots li button:focus:before {
+  opacity: 1;
+}
+```
+
+### Custom Dot Markup
+
+From the source code default in `slick.js:65-67`:
+
+```javascript
+customPaging: function(slider, i) {
+    return $('<button type="button"></button>').text(i + 1);
+}
+```
+
+### Advanced Custom Dots
+
+```javascript
+$('.slider').slick({
+  dots: true,
+  customPaging: function(slider, i) {
+    // Thumbnail dots
+    return '<button type="button"><img src="thumb' + i + '.jpg"></button>';
+  },
+  dotsClass: 'custom-dots',
+  appendDots: '.dots-container'
+});
+```
+
+<Tabs>
+  <Tab title="Numbered Dots">
+    ```javascript
+    customPaging: function(slider, i) {
+      return '<button type="button">' + (i + 1) + '</button>';
+    }
+    ```
+  </Tab>
+  <Tab title="Thumbnail Dots">
+    ```javascript
+    customPaging: function(slider, i) {
+      var thumb = $(slider.$slides[i]).data('thumb');
+      return '<button type="button"><img src="' + thumb + '"></button>';
+    }
+    ```
+  </Tab>
+  <Tab title="Progress Dots">
+    ```javascript
+    customPaging: function(slider, i) {
+      return '<button type="button"><span class="progress"></span></button>';
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Slide Styling
+
+### Custom Slide States
+
+Style different slide states using Slick's classes:
+
+```css
+.slick-slide {
+  margin: 0 10px;
+  transition: all ease-in-out 0.3s;
+  opacity: 0.5;
+}
+
+.slick-active {
+  opacity: 0.8;
+}
+
+.slick-current {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.slick-center {
+  transform: scale(1.1);
+}
+```
+
+### Example from Source
+
+From `index.html:37-48`:
+
+```css
+.slick-slide {
+  transition: all ease-in-out .3s;
+  opacity: .2;
+}
+
+.slick-active {
+  opacity: .5;
+}
+
+.slick-current {
+  opacity: 1;
+}
+```
+
+<CardGroup cols={2}>
+  <Card title=".slick-slide" icon="image">
+    All slides in the carousel
+  </Card>
+  <Card title=".slick-active" icon="circle-check">
+    Currently visible slides
+  </Card>
+  <Card title=".slick-current" icon="bullseye">
+    The current/focused slide
+  </Card>
+  <Card title=".slick-center" icon="align-center">
+    Center slide in center mode
+  </Card>
+</CardGroup>
+
+## Loading State
+
+Customize the loading appearance:
+
+```css
+.slick-loading .slick-list {
+  background: #fff url('./ajax-loader.gif') center center no-repeat;
+}
+
+.slick-loading .slick-slide {
+  visibility: hidden;
+}
+```
+
+### Custom Loader
+
+```css
+.slick-loading .slick-list {
+  background: #f0f0f0;
+}
+
+.slick-loading .slick-list:after {
+  content: 'Loading...';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 20px;
+  color: #999;
+}
+```
+
+## Disabled State Styling
+
+```css
+.slick-disabled {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
+.slick-prev.slick-disabled:before,
+.slick-next.slick-disabled:before {
+  opacity: 0.25;
+}
+```
+
+## Container Customization
+
+### Slider Container
+
+```css
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.slick-list {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.slick-track {
+  position: relative;
+  left: 0;
+  top: 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+```
+
+## Responsive Styling
+
+Apply different styles at breakpoints:
+
+```css
+/* Desktop */
+.slick-slide {
+  margin: 0 15px;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .slick-slide {
+    margin: 0 10px;
+  }
+  
+  .slick-prev {
+    left: 10px;
+  }
+  
+  .slick-next {
+    right: 10px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .slick-slide {
+    margin: 0 5px;
+  }
+  
+  .slick-dots {
+    bottom: -30px;
+  }
+}
+```
+
+## Complete Custom Theme Example
+
+<CodeGroup>
+```scss SCSS Custom Theme
+// Variables
+$primary-color: #3498db;
+$slider-spacing: 20px;
+$arrow-size: 50px;
+
+.custom-slider {
+  margin: 0 auto;
+  padding: 0 60px;
+
+  .slick-slide {
+    margin: 0 $slider-spacing/2;
+    transition: all 0.3s ease;
+    
+    img {
+      width: 100%;
+      border-radius: 8px;
+    }
+  }
+
+  .slick-prev,
+  .slick-next {
+    width: $arrow-size;
+    height: $arrow-size;
+    background: $primary-color;
+    border-radius: 50%;
+    z-index: 1;
+
+    &:before {
+      color: white;
+      font-size: 24px;
+      opacity: 1;
+    }
+
+    &:hover {
+      background: darken($primary-color, 10%);
+    }
+  }
+
+  .slick-prev {
+    left: 0;
+  }
+
+  .slick-next {
+    right: 0;
+  }
+
+  .slick-dots {
+    bottom: -40px;
+
+    li button:before {
+      font-size: 10px;
+      color: $primary-color;
+      opacity: 0.4;
+    }
+
+    li.slick-active button:before {
+      opacity: 1;
+    }
+  }
+}
+```
+
+```css CSS Custom Theme
+.custom-slider {
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.custom-slider .slick-slide {
+  margin: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.custom-slider .slick-slide img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.custom-slider .slick-prev,
+.custom-slider .slick-next {
+  width: 50px;
+  height: 50px;
+  background: #3498db;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.custom-slider .slick-prev:before,
+.custom-slider .slick-next:before {
+  color: white;
+  font-size: 24px;
+  opacity: 1;
+}
+
+.custom-slider .slick-prev:hover,
+.custom-slider .slick-next:hover {
+  background: #2980b9;
+}
+
+.custom-slider .slick-prev {
+  left: 0;
+}
+
+.custom-slider .slick-next {
+  right: 0;
+}
+
+.custom-slider .slick-dots {
+  bottom: -40px;
+}
+
+.custom-slider .slick-dots li button:before {
+  font-size: 10px;
+  color: #3498db;
+  opacity: 0.4;
+}
+
+.custom-slider .slick-dots li.slick-active button:before {
+  opacity: 1;
+}
+```
+</CodeGroup>
+
+<Warning>
+Always include the core `slick.css` file even when using custom themes. It contains essential structural styles.
+</Warning>
